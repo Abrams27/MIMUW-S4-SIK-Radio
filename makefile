@@ -4,30 +4,29 @@ LDFLAGS =
 
 .PHONY: all tests clean
 
+
 all: radio-proxy tests
 
-
-radio-proxy: radio-proxy.o
+radio-proxy: radioProxy.o
 	$(CC) $(LDFLAGS) -o $@ $^
 
-radio-proxy.o: src/main/cc/radio-proxy.cc
+
+radioProxy.o: src/main/cc/proxy/radioProxy.cc
 	$(CC) $(CFLAGS) -c $<
 
 
-tests: test1 test2
-
-test1: test1.o
-	$(CC) $(LDFLAGS) -o $@ $^
-
-test1.o: src/test/cc/test1.cc
+programArgumentsParser.o: src/main/cc/utils/programArgumentsParser.cc src/main/cc/utils/programArgumentsParser.h
 	$(CC) $(CFLAGS) -c $<
 
-test2: test2.o
+
+tests: programArgumentsParserTest
+
+programArgumentsParserTest: programArgumentsParserTest.o programArgumentsParser.o
 	$(CC) $(LDFLAGS) -o $@ $^
 
-test2.o: src/test/cc/test2.cc
+programArgumentsParserTest.o: src/test/cc/programArgumentsParserTest.cc src/main/cc/utils/programArgumentsParser.h
 	$(CC) $(CFLAGS) -c $<
 
 
 clean:
-	rm -f *.o radio-proxy test1 test2
+	rm -f *.o radio-proxy programArgumentsParserTest
