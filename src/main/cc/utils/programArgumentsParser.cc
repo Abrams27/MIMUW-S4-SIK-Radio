@@ -55,6 +55,8 @@ bool ProgramArgumentsParser::getArgumentIndex(const std::string &argumentName) {
       return i;
     }
   }
+
+  return 0;
 }
 
 bool ProgramArgumentsParser::isArgumentValueInt(const size_t argumentNameIndex) {

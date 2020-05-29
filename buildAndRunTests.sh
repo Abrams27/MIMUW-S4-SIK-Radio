@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
-echo -e "building..."
+echo -e "building tests ..."
 
 make clean
 make
 
-echo -e "running..."
+echo -e "running tests ..."
 
 ./programArgumentsParserTest

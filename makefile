@@ -7,11 +7,17 @@ LDFLAGS =
 
 all: radio-proxy tests
 
-radio-proxy: radioProxy.o
+radio-proxy: radioProxy.o audioStreamSinkFactory.o outputAudioStreamSink.o
 	$(CC) $(LDFLAGS) -o $@ $^
 
 
-radioProxy.o: src/main/cc/proxy/radioProxy.cc
+radioProxy.o: src/main/cc/proxy/radioProxy.cc src/main/cc/proxy/audio-stream-sink/audioStreamSinkFactory.h src/main/cc/proxy/audio-stream-sink/audioStreamSink.h src/main/cc/proxy/audio-stream-sink/outputAudioStreamSink.h
+	$(CC) $(CFLAGS) -c $<
+
+audioStreamSinkFactory.o: src/main/cc/proxy/audio-stream-sink/audioStreamSinkFactory.cc src/main/cc/proxy/audio-stream-sink/audioStreamSinkFactory.h src/main/cc/proxy/audio-stream-sink/audioStreamSink.h src/main/cc/proxy/audio-stream-sink/outputAudioStreamSink.h
+	$(CC) $(CFLAGS) -c $<
+
+outputAudioStreamSink.o: src/main/cc/proxy/audio-stream-sink/outputAudioStreamSink.cc src/main/cc/proxy/audio-stream-sink/outputAudioStreamSink.h src/main/cc/proxy/audio-stream-sink/audioStreamSink.h
 	$(CC) $(CFLAGS) -c $<
 
 
