@@ -1,5 +1,5 @@
 CC = g++-9
-CFLAGS = -Wall -Wextra -O2
+CFLAGS = -Wall -Wextra -O2 -std=c++14
 LDFLAGS =
 
 .PHONY: all tests clean

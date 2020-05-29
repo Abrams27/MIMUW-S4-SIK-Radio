@@ -1,13 +1,13 @@
 #include "audio-stream-sink/audioStreamSinkFactory.h"
 
+#include <memory>
+
 int main(int argc, char *argv[]) {
 
-  AudioStreamSink* audioStreamSink = AudioStreamSinkFactory::outputAudioStreamSink();
+  std::unique_ptr<AudioStreamSink> audioStreamSink = AudioStreamSinkFactory::outputAudioStreamSink();
 
   audioStreamSink->handleMetadata("METADATA");
   audioStreamSink->handleAudioData("AUDIO");
-
-  delete audioStreamSink;
 
   return 0;
 }

@@ -1,7 +1,8 @@
 #include "audioStreamSinkFactory.h"
 
 #include "outputAudioStreamSink.h"
+#include <memory>
 
-AudioStreamSink *AudioStreamSinkFactory::outputAudioStreamSink() {
-  return new OutputAudioStreamSink();
+std::unique_ptr<AudioStreamSink> AudioStreamSinkFactory::outputAudioStreamSink() {
+  return std::make_unique<OutputAudioStreamSink>();
 }

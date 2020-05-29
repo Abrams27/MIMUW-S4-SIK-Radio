@@ -3,10 +3,12 @@
 
 #include "audioStreamSink.h"
 
+#include <memory>
+
 class AudioStreamSinkFactory {
 
 public:
-  static AudioStreamSink* outputAudioStreamSink();
+  static std::unique_ptr<AudioStreamSink> outputAudioStreamSink();
 };
 
 #endif //MIMUW_S4_SIK_RADIO_AUDIOSTREAMSINKFACTORY_H
