@@ -34,3 +34,4 @@ cmake-build-debug/
 radio-proxy
 .idea/
 /programArgumentsParserTest
+/defaultRadioProxyArgumentsResolverTest

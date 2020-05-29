@@ -1,10 +1,8 @@
 #include <iostream>
 #include <cassert>
 
+#include "testUtils.h"
 #include "../../main/cc/utils/programArgumentsParser.h"
-
-void logTest(const std::string &message);
-void logPassedTest();
 
 void shouldParseArgument();
 void shouldParseIntArgument();
@@ -15,7 +13,7 @@ void shouldNotParseFlagIfNextIsFlag();
 const char *PROGRAM_NAME = "program";
 
 int main() {
-  std::cout << "-- programArgumentsParser tests --" << std::endl;
+  logTestFileName("programArgumentsParser");
 
   shouldParseArgument();
   shouldParseIntArgument();
@@ -23,7 +21,7 @@ int main() {
   shouldNotParseFlagWithoutValue();
   shouldNotParseFlagIfNextIsFlag();
 
-  std::cout << "-- all tests passed --" << std::endl << std::endl;
+  logAllTestsPassed();
 
   return 0;
 }
@@ -104,12 +102,4 @@ void shouldNotParseFlagIfNextIsFlag() {
   assert(programArgumentsParser->isArgumentDefined(FLAG) == false);
 
   logPassedTest();
-}
-
-void logTest(const std::string &message) {
-  std::cout << message + ": ";
-}
-
-void logPassedTest() {
-  std::cout << "passed" << std::endl;
 }

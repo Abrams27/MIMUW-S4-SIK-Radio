@@ -8,3 +8,4 @@ make
 echo -e "running tests ..."
 
 ./programArgumentsParserTest
+./defaultRadioProxyArgumentsResolverTest

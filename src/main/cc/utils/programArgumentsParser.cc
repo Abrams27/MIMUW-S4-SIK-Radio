@@ -1,9 +1,8 @@
 #include "programArgumentsParser.h"
 
-ProgramArgumentsParser::ProgramArgumentsParser(int argc, char **argv) {
-  this->argc = argc;
-  this->argv = argv;
-}
+ProgramArgumentsParser::ProgramArgumentsParser(int argc, char **argv) :
+  argc(argc),
+  argv(argv) { }
 
 bool ProgramArgumentsParser::isArgumentDefined(const std::string &argumentName) {
   if (!isArgumentNameDefined(argumentName)) {

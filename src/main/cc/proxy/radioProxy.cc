@@ -1,4 +1,5 @@
-#include "audio-stream-sink/audioStreamSinkFactory.h"
+#include "audio-stream-sinks/audioStreamSinkFactory.h"
+#include "../utils/programUsagePrinter.h"
 
 #include <memory>
 
