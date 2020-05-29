@@ -17,7 +17,7 @@ private:
   size_t argc;
   char **argv;
 
-  bool getArgumentIndex(const std::string &argumentName);
+  size_t getArgumentIndex(const std::string &argumentName);
 
   bool isArgumentNameDefined(const std::string &argumentName);
   bool isArgumentValueInt(size_t argumentNameIndex);

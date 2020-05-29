@@ -35,3 +35,7 @@ radio-proxy
 .idea/
 /programArgumentsParserTest
 /defaultRadioProxyArgumentsResolverTest
+/defaultRadioProxyArgumentsResolverMetadataInvalid
+/defaultRadioProxyArgumentsResolverNoHostTest
+/defaultRadioProxyArgumentsResolverNoPortTest
+/defaultRadioProxyArgumentsResolverNoResourceTest

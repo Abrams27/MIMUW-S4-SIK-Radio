@@ -9,3 +9,4 @@ echo -e "running tests ..."
 
 ./programArgumentsParserTest
 ./defaultRadioProxyArgumentsResolverTest
+./src/test/bash/defaultRadioProxyArgumentsResolverInvalidTest.sh

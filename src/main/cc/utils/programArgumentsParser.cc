@@ -48,7 +48,7 @@ bool ProgramArgumentsParser::isArgumentNameDefined(const std::string &argumentNa
   return false;
 }
 
-bool ProgramArgumentsParser::getArgumentIndex(const std::string &argumentName) {
+size_t ProgramArgumentsParser::getArgumentIndex(const std::string &argumentName) {
   for (size_t i = 0; i < argc; i++) {
     if (isArgumentNameEqual(argv[i], argumentName)) {
       return i;
