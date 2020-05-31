@@ -10,8 +10,11 @@
 #include <string>
 #include <iostream>
 #include "err.h"
-
+#include <memory>
 #define BUFFER_SIZE 1024
+
+#include "audio-stream-sinks/audioStreamSinkFactory.h"
+#include "response-parser/responseParser.h"
 
 int main(int argc, char *argv[]) {
 
@@ -57,6 +60,9 @@ int main(int argc, char *argv[]) {
 
   freeaddrinfo(addr_result);
 
+  std::unique_ptr<ResponseParser> responseResolver
+    = std::make_unique<ResponseParser>(AudioStreamSinkFactory::outputAudioStreamSink(), true, argv[0]);
+
   char *message = "GET /t043-1.mp3 HTTP/1.1\r\n"
                   "Host: waw02-03.ic.smcdn.pl:8000\r\n"
                   "User-Agent: curl/7.64.1\r\n"
@@ -70,35 +76,50 @@ int main(int argc, char *argv[]) {
     return 1;
   }
 
+//  if (write(sock, message, strlen(message)) != strlen(message)) {
+//    printf("partial / failed write");
+//    return 1;
+//  }
   char *line = NULL;
   size_t len = 0;
   getline(&line, &len, file);
-  std::cout << len << " " << std::string(line, strlen(line));
 
-  for (int i = 0; i < 20; i++) {
-//    memset(buffer, 0, sizeof(buffer));
-//    rcv_len = read(sock, buffer, sizeof(buffer) - 1);
+  responseResolver->parseStatusLine(line);
 
-
+  while(responseResolver->hasHeadersEnded()) {
     char *line = NULL;
     size_t len = 0;
     getline(&line, &len, file);
-    std::cout << len << ": " << strlen(line)<< "-> " << std::string(line) << "->>>>" << (std::string(line)  == "\r\n") << std::endl;
 
-//    if (rcv_len == 0) {
+    responseResolver->parseHeader(line);
+  }
+
+  while(true) {
+    memset(buffer, 0, sizeof(buffer));
+    rcv_len = read(sock, buffer, sizeof(buffer) - 1);
+
+//    char *line = NULL;
+//    size_t len = 0;
+//    if (getline(&line, &len, file) == -1) {
 //      break;
 //    }
+    responseResolver->parseBody(std::string(buffer, rcv_len));
+//    responseResolver->parseHeader(std::string(buffer, rcv_len));
+//    std::cout << len << ": " << strlen(line)<< "-> " << std::string(line) << "->>>>" << (std::string(line)  == "\r\n") << std::endl;
+
+    if (rcv_len == 0) {
+      break;
+    }
 //
-//    if (rcv_len < 0) {
-//      printf("read");
-//      return 1;
-//    }
+    if (rcv_len < 0) {
+      printf("read");
+      return 1;
+    }
 //
 //    std::string a(buffer, rcv_len);
 //    std::cout << a;
 
   }
-
   fclose(file);
   (void) close(sock); // socket would be closed anyway when the program ends
 

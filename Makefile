@@ -7,11 +7,11 @@ LDFLAGS =
 
 all: radio-proxy tests
 
-radio-proxy: radioProxy.o audioStreamSinkFactory.o outputAudioStreamSink.o programUsagePrinter.o
+radio-proxy: radioProxy.o audioStreamSinkFactory.o outputAudioStreamSink.o programUsagePrinter.o responseParser.o
 	$(CC) $(LDFLAGS) -o $@ $^
 
 
-radioProxy.o: src/main/cc/proxy/radioProxy.cc src/main/cc/proxy/audio-stream-sinks/audioStreamSinkFactory.h src/main/cc/proxy/audio-stream-sinks/audioStreamSink.h src/main/cc/proxy/audio-stream-sinks/outputAudioStreamSink.h src/main/cc/utils/programUsagePrinter.h
+radioProxy.o: src/main/cc/proxy/radioProxy.cc src/main/cc/proxy/audio-stream-sinks/audioStreamSinkFactory.h src/main/cc/proxy/audio-stream-sinks/audioStreamSink.h src/main/cc/proxy/audio-stream-sinks/outputAudioStreamSink.h src/main/cc/utils/programUsagePrinter.h src/main/cc/proxy/response-parser/responseParser.h
 	$(CC) $(CFLAGS) -c $<
 
 audioStreamSinkFactory.o: src/main/cc/proxy/audio-stream-sinks/audioStreamSinkFactory.cc src/main/cc/proxy/audio-stream-sinks/audioStreamSinkFactory.h src/main/cc/proxy/audio-stream-sinks/audioStreamSink.h src/main/cc/proxy/audio-stream-sinks/outputAudioStreamSink.h
@@ -20,6 +20,9 @@ audioStreamSinkFactory.o: src/main/cc/proxy/audio-stream-sinks/audioStreamSinkFa
 outputAudioStreamSink.o: src/main/cc/proxy/audio-stream-sinks/outputAudioStreamSink.cc src/main/cc/proxy/audio-stream-sinks/outputAudioStreamSink.h src/main/cc/proxy/audio-stream-sinks/audioStreamSink.h
 	$(CC) $(CFLAGS) -c $<
 
+
+responseParser.o: src/main/cc/proxy/response-parser/responseParser.cc src/main/cc/proxy/response-parser/responseParser.h src/main/cc/proxy/audio-stream-sinks/audioStreamSink.h
+	$(CC) $(CFLAGS) -c $<
 
 defaultRadioProxyArgumentsResolver.o: src/main/cc/proxy/program-arguments-resolvers/defaultRadioProxyArgumentsResolver.cc src/main/cc/proxy/program-arguments-resolvers/defaultRadioProxyArgumentsResolver.h src/main/cc/utils/programArgumentsParser.h src/main/cc/utils/programUsagePrinter.h
 	$(CC) $(CFLAGS) -c $<
@@ -33,12 +36,19 @@ programUsagePrinter.o: src/main/cc/utils/programUsagePrinter.cc src/main/cc/util
 
 
 
-tests: programArgumentsParserTest defaultRadioProxyArgumentsResolverTest defaultRadioProxyArgumentsResolverMetadataInvalid defaultRadioProxyArgumentsResolverNoHostTest defaultRadioProxyArgumentsResolverNoPortTest defaultRadioProxyArgumentsResolverNoResourceTest defaultRadioProxyArgumentsResolverTimeout0Test
+tests: programArgumentsParserTest defaultRadioProxyArgumentsResolverTest defaultRadioProxyArgumentsResolverMetadataInvalid defaultRadioProxyArgumentsResolverNoHostTest defaultRadioProxyArgumentsResolverNoPortTest defaultRadioProxyArgumentsResolverNoResourceTest defaultRadioProxyArgumentsResolverTimeout0Test responseResolverTest
 
 programArgumentsParserTest: programArgumentsParserTest.o programArgumentsParser.o
 	$(CC) $(LDFLAGS) -o $@ $^
 
 programArgumentsParserTest.o: src/test/cc/programArgumentsParserTest.cc src/main/cc/utils/programArgumentsParser.h
+	$(CC) $(CFLAGS) -c $<
+
+
+responseResolverTest: responseResolverTest.o responseParser.o programUsagePrinter.o audioStreamSinkFactory.o outputAudioStreamSink.o
+	$(CC) $(LDFLAGS) -o $@ $^
+
+responseResolverTest.o: src/test/cc/responseResolverTest.cc src/main/cc/proxy/response-parser/responseParser.h src/main/cc/proxy/audio-stream-sinks/audioStreamSinkFactory.h
 	$(CC) $(CFLAGS) -c $<
 
 
@@ -84,4 +94,4 @@ defaultRadioProxyArgumentsResolverTimeout0Test.o: src/test/cc/default-radio-prox
 	$(CC) $(CFLAGS) -c $<
 
 clean:
-	rm -f *.o radio-proxy programArgumentsParserTest defaultRadioProxyArgumentsResolverTest defaultRadioProxyArgumentsResolverMetadataInvalid defaultRadioProxyArgumentsResolverNoResourceTest defaultRadioProxyArgumentsResolverNoHostTest defaultRadioProxyArgumentsResolverNoPortTest defaultRadioProxyArgumentsResolverNoResourceTest defaultRadioProxyArgumentsResolverTimeout0Test
+	rm -f *.o radio-proxy programArgumentsParserTest defaultRadioProxyArgumentsResolverTest defaultRadioProxyArgumentsResolverMetadataInvalid defaultRadioProxyArgumentsResolverNoResourceTest defaultRadioProxyArgumentsResolverNoHostTest defaultRadioProxyArgumentsResolverNoPortTest defaultRadioProxyArgumentsResolverNoResourceTest defaultRadioProxyArgumentsResolverTimeout0Test responseResolverTest

@@ -39,3 +39,4 @@ radio-proxy
 /defaultRadioProxyArgumentsResolverNoHostTest
 /defaultRadioProxyArgumentsResolverNoPortTest
 /defaultRadioProxyArgumentsResolverNoResourceTest
+/defaultRadioProxyArgumentsResolverTimeout0Test
