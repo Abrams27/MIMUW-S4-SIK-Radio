@@ -47,12 +47,13 @@ private:
 
   void parseOptionalArguments();
   void parseMetadata();
-  void parseMetadataIfDefined();
+  void parseMetadataIfDefinedOrExit();
 
   static bool isMetadataValueBoolean(const std::string &metadataValue);
   static bool mapValidMetadata(const std::string &metadataValue);
 
   void parseTimeout();
+  void parseTimeoutIfDefinedOrExit();
 
 };
 

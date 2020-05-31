@@ -77,11 +77,11 @@ void DefaultRadioProxyArgumentsResolver::parseOptionalArguments() {
 
 void DefaultRadioProxyArgumentsResolver::parseMetadata() {
   if (programArgumentsParser->isArgumentDefined(metadataFlag)) {
-    parseMetadataIfDefined();
+    parseMetadataIfDefinedOrExit();
   }
 }
 
-void DefaultRadioProxyArgumentsResolver::parseMetadataIfDefined() {
+void DefaultRadioProxyArgumentsResolver::parseMetadataIfDefinedOrExit() {
   std::string metadataValue = programArgumentsParser->getArgument(metadataFlag);
 
   if (isMetadataValueBoolean(metadataValue)) {
@@ -102,6 +102,16 @@ bool DefaultRadioProxyArgumentsResolver::mapValidMetadata(const std::string &met
 
 void DefaultRadioProxyArgumentsResolver::parseTimeout() {
   if (programArgumentsParser->isIntArgumentDefined(timeoutFlag)) {
-    timeout = programArgumentsParser->getIntArgument(timeoutFlag);
+    parseTimeoutIfDefinedOrExit();
+  } else if (programArgumentsParser->isArgumentDefined(timeoutFlag)) {
+    programUsagePrinter->printUsageAndExitWith1();
+  }
+}
+
+void DefaultRadioProxyArgumentsResolver::parseTimeoutIfDefinedOrExit() {
+  timeout = programArgumentsParser->getIntArgument(timeoutFlag);
+
+  if (timeout <= 0) {
+    programUsagePrinter->printUsageAndExitWith1();
   }
 }

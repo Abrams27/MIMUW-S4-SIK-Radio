@@ -24,4 +24,8 @@ validateExitcode $?
 ./defaultRadioProxyArgumentsResolverNoResourceTest 2> /dev/null
 validateExitcode $?
 
+./defaultRadioProxyArgumentsResolverTimeout0Test 2> /dev/null
+validateExitcode $?
+
+
 echo -e "-- all tests passed --\n"
