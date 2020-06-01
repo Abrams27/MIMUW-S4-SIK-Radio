@@ -36,7 +36,7 @@ programUsagePrinter.o: src/main/cc/utils/programUsagePrinter.cc src/main/cc/util
 
 
 
-tests: programArgumentsParserTest defaultRadioProxyArgumentsResolverTest defaultRadioProxyArgumentsResolverMetadataInvalid defaultRadioProxyArgumentsResolverNoHostTest defaultRadioProxyArgumentsResolverNoPortTest defaultRadioProxyArgumentsResolverNoResourceTest defaultRadioProxyArgumentsResolverTimeout0Test responseResolverTest
+tests: programArgumentsParserTest defaultRadioProxyArgumentsResolverTest defaultRadioProxyArgumentsResolverMetadataInvalid defaultRadioProxyArgumentsResolverNoHostTest defaultRadioProxyArgumentsResolverNoPortTest defaultRadioProxyArgumentsResolverNoResourceTest defaultRadioProxyArgumentsResolverTimeout0Test responseResolverTest responseResolverNoMetadataTest responseResolverMetadataTest
 
 programArgumentsParserTest: programArgumentsParserTest.o programArgumentsParser.o
 	$(CC) $(LDFLAGS) -o $@ $^
@@ -50,6 +50,21 @@ responseResolverTest: responseResolverTest.o responseParser.o programUsagePrinte
 
 responseResolverTest.o: src/test/cc/responseResolverTest.cc src/main/cc/proxy/response-parser/responseParser.h src/main/cc/proxy/audio-stream-sinks/audioStreamSinkFactory.h
 	$(CC) $(CFLAGS) -c $<
+
+
+responseResolverNoMetadataTest: responseResolverNoMetadataTest.o responseParser.o programUsagePrinter.o audioStreamSinkFactory.o outputAudioStreamSink.o
+	$(CC) $(LDFLAGS) -o $@ $^
+
+responseResolverNoMetadataTest.o: src/test/cc/response-resolver-tests/responseResolverNoMetadataTest.cc src/main/cc/proxy/response-parser/responseParser.h src/main/cc/proxy/audio-stream-sinks/audioStreamSinkFactory.h
+	$(CC) $(CFLAGS) -c $<
+
+
+responseResolverMetadataTest: responseResolverMetadataTest.o responseParser.o programUsagePrinter.o audioStreamSinkFactory.o outputAudioStreamSink.o
+	$(CC) $(LDFLAGS) -o $@ $^
+
+responseResolverMetadataTest.o: src/test/cc/response-resolver-tests/responseResolverMetadataTest.cc src/main/cc/proxy/response-parser/responseParser.h src/main/cc/proxy/audio-stream-sinks/audioStreamSinkFactory.h
+	$(CC) $(CFLAGS) -c $<
+
 
 
 defaultRadioProxyArgumentsResolverTest: defaultRadioProxyArgumentsResolverTest.o defaultRadioProxyArgumentsResolver.o programArgumentsParser.o programUsagePrinter.o
@@ -94,4 +109,4 @@ defaultRadioProxyArgumentsResolverTimeout0Test.o: src/test/cc/default-radio-prox
 	$(CC) $(CFLAGS) -c $<
 
 clean:
-	rm -f *.o radio-proxy programArgumentsParserTest defaultRadioProxyArgumentsResolverTest defaultRadioProxyArgumentsResolverMetadataInvalid defaultRadioProxyArgumentsResolverNoResourceTest defaultRadioProxyArgumentsResolverNoHostTest defaultRadioProxyArgumentsResolverNoPortTest defaultRadioProxyArgumentsResolverNoResourceTest defaultRadioProxyArgumentsResolverTimeout0Test responseResolverTest
+	rm -f *.o radio-proxy programArgumentsParserTest defaultRadioProxyArgumentsResolverTest defaultRadioProxyArgumentsResolverMetadataInvalid defaultRadioProxyArgumentsResolverNoResourceTest defaultRadioProxyArgumentsResolverNoHostTest defaultRadioProxyArgumentsResolverNoPortTest defaultRadioProxyArgumentsResolverNoResourceTest defaultRadioProxyArgumentsResolverTimeout0Test responseResolverTest responseResolverNoMetadataTest responseResolverMetadataTest

@@ -84,8 +84,8 @@ void shouldParseHeaders() {
   std::unique_ptr<ResponseParser> responseResolver
     = std::make_unique<ResponseParser>(AudioStreamSinkFactory::outputAudioStreamSink(), true, PROGRAM_NAME);
 
-  for (int i = 0; i < 10; i++) {
-    responseResolver->parseHeader(HEADERS_TEST[i]);
+  for (const auto & i : HEADERS_TEST) {
+    responseResolver->parseHeader(i);
   }
 
   assert(responseResolver->hasHeadersEnded());

@@ -23,21 +23,56 @@ private:
     "HTTP/1.0 200 OK\r\n",
     "HTTP/1.1 200 OK\r\n"
   };
-  const std::string metadataHeaderRegexString = R"(icy-metaint:(\d*)\\r\\n)";
+  const std::string metadataHeaderRegexString = R"(icy-metaint:(\d*)\r\n)";
   const std::string headersEndString = "\r\n";
 
   std::unique_ptr<AudioStreamSink> audioStreamSink;
   std::unique_ptr<ProgramUsagePrinter> programUsagePrinter;
   bool metadataRequired;
 
-  bool hasHeadersEndedFlag;
-  int metadataInterval;
+  bool hasHeadersEndedFlag = false;
+  bool hasMetadataDetected = false;
+
+  int metadataInterval = 0;
+  int bodyBytesRead = 0;
+
+  int metadataBlockSize = 0;
+  int metadataBytesRead = 0;
+  bool hasMetadataSizeRead = false;
+
+  bool isMetadataMode = false;
 
   bool isStatusLineAcceptable(const std::string &statusLine);
   bool isMetadataHeader(const std::string &header);
   int getMetadataInterval(const std::string &header);
   void resolveMetadataHeader(const std::string &header);
   void updateFlagIfHeadersEnded(const std::string &header);
+
+  void parseAudioBlock(const std::string &line);
+  void parseMetadataBlock(const std::string &line);
+
+  bool willLineFitInInterval(const std::string &line);
+  void updateMetadataModeIfIntervalEnded();
+
+  void parseAudioBlockIfWillFitInInterval(const std::string &line);
+
+  void parseAudioBlockIfWillNotFitInInterval(const std::string &line);
+
+  void parseMetadataBlockSize(const std::string &line);
+
+  void updateModeIfEndOfBlock();
+
+  size_t getMetadataBlockSize(const std::string &line);
+
+  void parseMetadataBlockIfLineWillFitInBlock(const std::string &line);
+
+  void parseMetadataBlockIfLineWillNotFitInBlock(const std::string &line);
+
+  void parseMetadataBlockIfSizeRead(const std::string &line);
+
+  bool isParsingMetadataRequired() const;
+
+  void parseBodyWithMetadata(const std::string &line);
 };
 
 

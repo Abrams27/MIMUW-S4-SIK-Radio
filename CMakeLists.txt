@@ -22,3 +22,5 @@ add_executable(programUsagePrinter                                      src/main
 add_executable(programArgumentsParserTest                               src/test/cc/programArgumentsParserTest.cc)
 add_executable(defaultRadioProxyArgumentsResolverTest                   src/test/cc/defaultRadioProxyArgumentsResolverTest.cc)
 add_executable(responseResolverTest                                     src/test/cc/responseResolverTest.cc)
+add_executable(responseResolverNoMetadataTest                           src/test/cc/response-resolver-tests/responseResolverNoMetadataTest.cc)
+add_executable(responseResolverMetadataTest                             src/test/cc/response-resolver-tests/responseResolverMetadataTest.cc)

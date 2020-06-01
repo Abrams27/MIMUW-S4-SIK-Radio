@@ -28,7 +28,7 @@
 
 # Executables
 *.exe
-*.out
+#*.out
 *.app
 cmake-build-debug/
 radio-proxy
@@ -40,3 +40,7 @@ radio-proxy
 /defaultRadioProxyArgumentsResolverNoPortTest
 /defaultRadioProxyArgumentsResolverNoResourceTest
 /defaultRadioProxyArgumentsResolverTimeout0Test
+/responseResolverMetadataTest
+/responseResolverNoMetadataTest
+/out
+/err
