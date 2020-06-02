@@ -81,8 +81,9 @@ void ResponseParser::parseBodyWithMetadata(const std::string &line) {
   }
 }
 
-bool ResponseParser::isParsingMetadataRequired() const { return hasMetadataDetected &&
-    metadataRequired; }
+bool ResponseParser::isParsingMetadataRequired() {
+  return hasMetadataDetected && metadataRequired;
+}
 
 bool ResponseParser::hasHeadersEnded() {
   return hasHeadersEndedFlag;
@@ -144,6 +145,7 @@ void ResponseParser::parseMetadataBlockIfSizeRead(const std::string &line) {
 void ResponseParser::parseMetadataBlockIfLineWillNotFitInBlock(const std::string &line) {
   const size_t spaceLeftForMetadata = metadataBlockSize - metadataBytesRead;
   metadataBytesRead = metadataBlockSize;
+  updateModeIfEndOfBlock();
 
   audioStreamSink->handleMetadata(line.substr(0, spaceLeftForMetadata));
 
@@ -166,9 +168,8 @@ void ResponseParser::parseMetadataBlockSize(const std::string &line) {
 }
 
 size_t ResponseParser::getMetadataBlockSize(const std::string &line) {
-  size_t metadataSize = line[0] - '0';
-
-  return metadataSize * 16;
+  size_t metadataSize = line[0];
+  return metadataSize * metadataBlockMultiplicationFactor;
 }
 
 void ResponseParser::updateModeIfEndOfBlock() {

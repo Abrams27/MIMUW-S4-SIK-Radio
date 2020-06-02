@@ -25,6 +25,7 @@ private:
   };
   const std::string metadataHeaderRegexString = R"(icy-metaint:(\d*)\r\n)";
   const std::string headersEndString = "\r\n";
+  const int metadataBlockMultiplicationFactor = 16;
 
   std::unique_ptr<AudioStreamSink> audioStreamSink;
   std::unique_ptr<ProgramUsagePrinter> programUsagePrinter;
@@ -55,23 +56,17 @@ private:
   void updateMetadataModeIfIntervalEnded();
 
   void parseAudioBlockIfWillFitInInterval(const std::string &line);
-
   void parseAudioBlockIfWillNotFitInInterval(const std::string &line);
 
   void parseMetadataBlockSize(const std::string &line);
-
   void updateModeIfEndOfBlock();
 
   size_t getMetadataBlockSize(const std::string &line);
-
   void parseMetadataBlockIfLineWillFitInBlock(const std::string &line);
-
   void parseMetadataBlockIfLineWillNotFitInBlock(const std::string &line);
-
   void parseMetadataBlockIfSizeRead(const std::string &line);
 
-  bool isParsingMetadataRequired() const;
-
+  bool isParsingMetadataRequired();
   void parseBodyWithMetadata(const std::string &line);
 };
 

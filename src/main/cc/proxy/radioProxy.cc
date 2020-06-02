@@ -68,7 +68,8 @@ int main(int argc, char *argv[]) {
                   "User-Agent: curl/7.64.1\r\n"
                   "Accept: */*\r\n"
                   "Icy-MetaData: 1\r\n"
-                  "Connection: close\r\n\r\n";
+                  "Connection: close\r\n"
+                  "\r\n";
 
   FILE *file = fdopen(sock, "r+");
   if (fprintf(file, "%s", message) < 0) {
@@ -86,11 +87,12 @@ int main(int argc, char *argv[]) {
 
   responseResolver->parseStatusLine(line);
 
-  while(responseResolver->hasHeadersEnded()) {
+  while(responseResolver->hasHeadersEnded() == 0) {
     char *line = NULL;
     size_t len = 0;
     getline(&line, &len, file);
 
+    std::cout << line;
     responseResolver->parseHeader(line);
   }
 
@@ -103,10 +105,6 @@ int main(int argc, char *argv[]) {
 //    if (getline(&line, &len, file) == -1) {
 //      break;
 //    }
-    responseResolver->parseBody(std::string(buffer, rcv_len));
-//    responseResolver->parseHeader(std::string(buffer, rcv_len));
-//    std::cout << len << ": " << strlen(line)<< "-> " << std::string(line) << "->>>>" << (std::string(line)  == "\r\n") << std::endl;
-
     if (rcv_len == 0) {
       break;
     }
@@ -115,6 +113,9 @@ int main(int argc, char *argv[]) {
       printf("read");
       return 1;
     }
+    responseResolver->parseBody(std::string(buffer, rcv_len));
+//    std::cout << len << ": " << strlen(line)<< "-> " << std::string(line) << "->>>>" << (std::string(line)  == "\r\n") << std::endl;
+
 //
 //    std::string a(buffer, rcv_len);
 //    std::cout << a;
