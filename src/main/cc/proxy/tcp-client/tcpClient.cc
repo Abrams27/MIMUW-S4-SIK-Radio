@@ -40,25 +40,6 @@ TcpClient::TcpClient(std::string host, std::string port, std::string resource, i
   connectionFile = fdopen(socketId, "r+");
 }
 
-void TcpClient::initAddrResult(struct addrinfo *addrResult) {
-  addrinfo addrHints = initAddrHints();
-
-  if (getaddrinfo(host.c_str(), port.c_str(), &addrHints, &addrResult) != 0) {
-    exit(1);
-  }
-}
-
-addrinfo TcpClient::initAddrHints() {
-  struct addrinfo addrHints;
-  memset(&addrHints, 0, sizeof(struct addrinfo));
-
-  addrHints.ai_family = AF_INET; // IPv4
-  addrHints.ai_socktype = SOCK_STREAM;
-  addrHints.ai_protocol = IPPROTO_TCP;
-
-  return addrHints;
-}
-
 void TcpClient::initSocket(struct addrinfo *addrResult) {
   socketId = socket(addrResult->ai_family, addrResult->ai_socktype, addrResult->ai_protocol);
   if (socketId < 0) {
@@ -148,6 +129,7 @@ bool TcpClient::hasPreviousReadSucceed() {
 }
 
 TcpClient::~TcpClient() {
+  std::cout << "XDDDDD?";
   fclose(connectionFile);
   close(socketId);
 }

@@ -7,11 +7,11 @@ LDFLAGS =
 
 all: radio-proxy tests
 
-radio-proxy: radioProxy.o audioStreamSinkFactory.o outputAudioStreamSink.o programUsagePrinter.o responseResolver.o tcpClient.o
+radio-proxy: radioProxy.o audioStreamSinkFactory.o outputAudioStreamSink.o programUsagePrinter.o responseResolver.o tcpClient.o udpClientsStorage.o
 	$(CC) $(LDFLAGS) -o $@ $^
 
 
-radioProxy.o: src/main/cc/proxy/radioProxy.cc src/main/cc/proxy/audio-stream-sinks/audioStreamSinkFactory.h src/main/cc/proxy/audio-stream-sinks/audioStreamSink.h src/main/cc/proxy/audio-stream-sinks/outputAudioStreamSink.h src/main/cc/utils/programUsagePrinter.h src/main/cc/proxy/response-resolver/responseResolver.h src/main/cc/proxy/tcp-client/tcpClient.h
+radioProxy.o: src/main/cc/proxy/radioProxy.cc src/main/cc/proxy/audio-stream-sinks/audioStreamSinkFactory.h src/main/cc/proxy/audio-stream-sinks/audioStreamSink.h src/main/cc/proxy/audio-stream-sinks/outputAudioStreamSink.h src/main/cc/utils/programUsagePrinter.h src/main/cc/proxy/response-resolver/responseResolver.h src/main/cc/proxy/tcp-client/tcpClient.h src/main/cc/utils/programUsagePrinter.h
 	$(CC) $(CFLAGS) -c $<
 
 audioStreamSinkFactory.o: src/main/cc/proxy/audio-stream-sinks/audioStreamSinkFactory.cc src/main/cc/proxy/audio-stream-sinks/audioStreamSinkFactory.h src/main/cc/proxy/audio-stream-sinks/audioStreamSink.h src/main/cc/proxy/audio-stream-sinks/outputAudioStreamSink.h
@@ -36,6 +36,10 @@ tcpClient.o: src/main/cc/proxy/tcp-client/tcpClient.cc src/main/cc/proxy/tcp-cli
 	$(CC) $(CFLAGS) -c $<
 
 
+udpClientsStorage.o: src/main/cc/proxy/udp-client/udpClientsStorage.cc src/main/cc/proxy/udp-client/udpClientsStorage.h
+	$(CC) $(CFLAGS) -c $<
+
+
 programArgumentsParser.o: src/main/cc/utils/programArgumentsParser.cc src/main/cc/utils/programArgumentsParser.h
 	$(CC) $(CFLAGS) -c $<
 
@@ -44,7 +48,7 @@ programUsagePrinter.o: src/main/cc/utils/programUsagePrinter.cc src/main/cc/util
 
 
 
-tests: programArgumentsParserTest defaultRadioProxyArgumentsResolverTest defaultRadioProxyArgumentsResolverMetadataInvalid defaultRadioProxyArgumentsResolverNoHostTest defaultRadioProxyArgumentsResolverNoPortTest defaultRadioProxyArgumentsResolverNoResourceTest defaultRadioProxyArgumentsResolverTimeout0Test responseResolverTest udpProxyArgumentsResolverTest
+tests: programArgumentsParserTest defaultRadioProxyArgumentsResolverTest defaultRadioProxyArgumentsResolverMetadataInvalid defaultRadioProxyArgumentsResolverNoHostTest defaultRadioProxyArgumentsResolverNoPortTest defaultRadioProxyArgumentsResolverNoResourceTest defaultRadioProxyArgumentsResolverTimeout0Test responseResolverTest udpProxyArgumentsResolverTest udpClientsStorageTest
 
 programArgumentsParserTest: programArgumentsParserTest.o programArgumentsParser.o
 	$(CC) $(LDFLAGS) -o $@ $^
@@ -73,6 +77,12 @@ udpProxyArgumentsResolverTest: udpProxyArgumentsResolverTest.o udpProxyArguments
 udpProxyArgumentsResolverTest.o: src/test/cc/udpProxyArgumentsResolverTest.cc src/main/cc/proxy/program-arguments-resolvers/udpProxyArgumentsResolver.h
 	$(CC) $(CFLAGS) -c $<
 
+
+udpClientsStorageTest: udpClientsStorageTest.o udpClientsStorage.o
+	$(CC) $(LDFLAGS) -o $@ $^
+
+udpClientsStorageTest.o: src/test/cc/udpClientsStorageTest.cc src/main/cc/proxy/udp-client/udpClientsStorage.h
+	$(CC) $(CFLAGS) -c $<
 
 
 defaultRadioProxyArgumentsResolverMetadataInvalid: defaultRadioProxyArgumentsResolverMetadataInvalid.o defaultRadioProxyArgumentsResolver.o programArgumentsParser.o programUsagePrinter.o
@@ -110,4 +120,4 @@ defaultRadioProxyArgumentsResolverTimeout0Test.o: src/test/cc/default-radio-prox
 	$(CC) $(CFLAGS) -c $<
 
 clean:
-	rm -f *.o radio-proxy programArgumentsParserTest defaultRadioProxyArgumentsResolverTest defaultRadioProxyArgumentsResolverMetadataInvalid defaultRadioProxyArgumentsResolverNoResourceTest defaultRadioProxyArgumentsResolverNoHostTest defaultRadioProxyArgumentsResolverNoPortTest defaultRadioProxyArgumentsResolverNoResourceTest defaultRadioProxyArgumentsResolverTimeout0Test responseResolverTest udpProxyArgumentsResolverTest
+	rm -f *.o radio-proxy programArgumentsParserTest defaultRadioProxyArgumentsResolverTest defaultRadioProxyArgumentsResolverMetadataInvalid defaultRadioProxyArgumentsResolverNoResourceTest defaultRadioProxyArgumentsResolverNoHostTest defaultRadioProxyArgumentsResolverNoPortTest defaultRadioProxyArgumentsResolverNoResourceTest defaultRadioProxyArgumentsResolverTimeout0Test responseResolverTest udpProxyArgumentsResolverTest udpClientsStorageTest

@@ -43,15 +43,22 @@ int main(int argc, char *argv[]) {
   size_t interval = responseResolver->getAudioBlockSize();
 
   while(tcpClient->hasPreviousReadSucceed() && run) {
+    std::string s = tcpClient->getResponseChunk(interval);
+    if (tcpClient->hasPreviousReadSucceed()) {
+      audioSink->handleAudioData(s);
 
-    audioSink->handleAudioData(tcpClient->getResponseChunk(interval));
+      if (responseResolver->areMetadataParsing()) {
+        std::string o = tcpClient->getResponseChunk(1);
+        if (tcpClient->hasPreviousReadSucceed()) {
+          size_t metSize = responseResolver->parseMetadataBlockSize(o);
 
-    if (responseResolver->areMetadataParsing()) {
-      size_t metSize = responseResolver->parseMetadataBlockSize(tcpClient->getResponseChunk(1));
-
-      audioSink->handleMetadata(tcpClient->getResponseChunk(metSize));
+          o = tcpClient->getResponseChunk(metSize);
+          if (tcpClient->hasPreviousReadSucceed()) {
+            audioSink->handleMetadata(o);
+          }
+        }
+      }
     }
-
   }
 
   return 0;

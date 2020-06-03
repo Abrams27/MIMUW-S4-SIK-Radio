@@ -27,8 +27,6 @@ private:
   FILE *connectionFile;
   bool hasPreviousReadSucceedFlag = false;
 
-  void initAddrResult(struct addrinfo *addr_result);
-  addrinfo initAddrHints();
   void initSocket(struct addrinfo *addrResult);
   void startConnection(struct addrinfo *addrResult);
   void setTimeout();
