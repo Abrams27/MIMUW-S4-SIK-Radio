@@ -6,8 +6,8 @@
 #include "../../main/cc/proxy/program-arguments-resolvers/defaultRadioProxyArgumentsResolver.h"
 
 void shouldParseRequiredAndGiveDefaultForNonRequired();
-void shouldParseRequiredAndMetadataYesAndDefaultTimeout();
-void shouldParseRequiredAndMetadataNoAndDefaultTimeout();
+void shouldParseRequiredAndMulticastAndDefaultTimeout();
+void shouldParseRequiredAndTimeout();
 void shouldParseRequiredAndMetadataAndTimeout();
 void shouldParseRequiredAndTimeoutAndDefaultMetadata();
 
@@ -41,8 +41,8 @@ int main() {
   logTestFileName("defaultRadioProxyArgumentsResolverTest");
 
   shouldParseRequiredAndGiveDefaultForNonRequired();
-  shouldParseRequiredAndMetadataYesAndDefaultTimeout();
-  shouldParseRequiredAndMetadataNoAndDefaultTimeout();
+  shouldParseRequiredAndMulticastAndDefaultTimeout();
+  shouldParseRequiredAndTimeout();
   shouldParseRequiredAndMetadataAndTimeout();
   shouldParseRequiredAndTimeoutAndDefaultMetadata();
 
@@ -75,7 +75,7 @@ void shouldParseRequiredAndGiveDefaultForNonRequired() {
   logPassedTest();
 }
 
-void shouldParseRequiredAndMetadataYesAndDefaultTimeout() {
+void shouldParseRequiredAndMulticastAndDefaultTimeout() {
   logTest("should parse required and metadata yes give default for timeout");
 
   const char *TEST_PARAMS[] = {
@@ -100,7 +100,7 @@ void shouldParseRequiredAndMetadataYesAndDefaultTimeout() {
   logPassedTest();
 }
 
-void shouldParseRequiredAndMetadataNoAndDefaultTimeout() {
+void shouldParseRequiredAndTimeout() {
   logTest("should parse required and metadata no give default for timeout");
 
   const char *TEST_PARAMS[] = {

@@ -11,3 +11,4 @@ echo -e "running tests ..."
 ./defaultRadioProxyArgumentsResolverTest
 ./src/test/bash/defaultRadioProxyArgumentsResolverInvalidTest.sh
 ./responseResolverTest
+./udpProxyArgumentsResolverTest

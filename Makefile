@@ -24,7 +24,11 @@ outputAudioStreamSink.o: src/main/cc/proxy/audio-stream-sinks/outputAudioStreamS
 responseResolver.o: src/main/cc/proxy/response-resolver/responseResolver.cc src/main/cc/proxy/response-resolver/responseResolver.h
 	$(CC) $(CFLAGS) -c $<
 
+
 defaultRadioProxyArgumentsResolver.o: src/main/cc/proxy/program-arguments-resolvers/defaultRadioProxyArgumentsResolver.cc src/main/cc/proxy/program-arguments-resolvers/defaultRadioProxyArgumentsResolver.h src/main/cc/utils/programArgumentsParser.h src/main/cc/utils/programUsagePrinter.h
+	$(CC) $(CFLAGS) -c $<
+
+udpProxyArgumentsResolver.o: src/main/cc/proxy/program-arguments-resolvers/udpProxyArgumentsResolver.cc src/main/cc/proxy/program-arguments-resolvers/udpProxyArgumentsResolver.h src/main/cc/utils/programArgumentsParser.h src/main/cc/utils/programUsagePrinter.h
 	$(CC) $(CFLAGS) -c $<
 
 
@@ -40,7 +44,7 @@ programUsagePrinter.o: src/main/cc/utils/programUsagePrinter.cc src/main/cc/util
 
 
 
-tests: programArgumentsParserTest defaultRadioProxyArgumentsResolverTest defaultRadioProxyArgumentsResolverMetadataInvalid defaultRadioProxyArgumentsResolverNoHostTest defaultRadioProxyArgumentsResolverNoPortTest defaultRadioProxyArgumentsResolverNoResourceTest defaultRadioProxyArgumentsResolverTimeout0Test responseResolverTest
+tests: programArgumentsParserTest defaultRadioProxyArgumentsResolverTest defaultRadioProxyArgumentsResolverMetadataInvalid defaultRadioProxyArgumentsResolverNoHostTest defaultRadioProxyArgumentsResolverNoPortTest defaultRadioProxyArgumentsResolverNoResourceTest defaultRadioProxyArgumentsResolverTimeout0Test responseResolverTest udpProxyArgumentsResolverTest
 
 programArgumentsParserTest: programArgumentsParserTest.o programArgumentsParser.o
 	$(CC) $(LDFLAGS) -o $@ $^
@@ -61,6 +65,14 @@ defaultRadioProxyArgumentsResolverTest: defaultRadioProxyArgumentsResolverTest.o
 
 defaultRadioProxyArgumentsResolverTest.o: src/test/cc/defaultRadioProxyArgumentsResolverTest.cc src/main/cc/proxy/program-arguments-resolvers/defaultRadioProxyArgumentsResolver.h
 	$(CC) $(CFLAGS) -c $<
+
+
+udpProxyArgumentsResolverTest: udpProxyArgumentsResolverTest.o udpProxyArgumentsResolver.o programArgumentsParser.o programUsagePrinter.o
+	$(CC) $(LDFLAGS) -o $@ $^
+
+udpProxyArgumentsResolverTest.o: src/test/cc/udpProxyArgumentsResolverTest.cc src/main/cc/proxy/program-arguments-resolvers/udpProxyArgumentsResolver.h
+	$(CC) $(CFLAGS) -c $<
+
 
 
 defaultRadioProxyArgumentsResolverMetadataInvalid: defaultRadioProxyArgumentsResolverMetadataInvalid.o defaultRadioProxyArgumentsResolver.o programArgumentsParser.o programUsagePrinter.o
@@ -98,4 +110,4 @@ defaultRadioProxyArgumentsResolverTimeout0Test.o: src/test/cc/default-radio-prox
 	$(CC) $(CFLAGS) -c $<
 
 clean:
-	rm -f *.o radio-proxy programArgumentsParserTest defaultRadioProxyArgumentsResolverTest defaultRadioProxyArgumentsResolverMetadataInvalid defaultRadioProxyArgumentsResolverNoResourceTest defaultRadioProxyArgumentsResolverNoHostTest defaultRadioProxyArgumentsResolverNoPortTest defaultRadioProxyArgumentsResolverNoResourceTest defaultRadioProxyArgumentsResolverTimeout0Test responseResolverTest
+	rm -f *.o radio-proxy programArgumentsParserTest defaultRadioProxyArgumentsResolverTest defaultRadioProxyArgumentsResolverMetadataInvalid defaultRadioProxyArgumentsResolverNoResourceTest defaultRadioProxyArgumentsResolverNoHostTest defaultRadioProxyArgumentsResolverNoPortTest defaultRadioProxyArgumentsResolverNoResourceTest defaultRadioProxyArgumentsResolverTimeout0Test responseResolverTest udpProxyArgumentsResolverTest

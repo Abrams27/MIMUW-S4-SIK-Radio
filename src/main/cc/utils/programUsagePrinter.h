@@ -12,7 +12,7 @@ public:
 
 private:
   const std::string usageLiteral = "Usage:";
-  const std::string usage = "<-h host> <-r resource> <-p port> [-m yes|no] [-t timeout]";
+  const std::string usage = "<-h host> <-r resource> <-p port> [-m yes|no] [-t timeout] [<-P port> [-B multi] [-T timeout]]";
 
   char *programName;
 };

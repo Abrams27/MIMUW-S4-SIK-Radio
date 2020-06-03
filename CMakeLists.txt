@@ -11,6 +11,8 @@ add_executable(audioStreamSinkFactory                                   src/main
 add_executable(outputAudioStreamSink                                    src/main/cc/proxy/audio-stream-sinks/outputAudioStreamSink.cc)
 
 add_executable(defaultRadioProxyArgumentsResolver                       src/main/cc/proxy/program-arguments-resolvers/defaultRadioProxyArgumentsResolver.cc)
+add_executable(udpProxyArgumentsResolver                                src/main/cc/proxy/program-arguments-resolvers/udpProxyArgumentsResolver.cc)
+
 
 add_executable(responseResolver                                         src/main/cc/proxy/response-resolver/responseResolver.cc)
 
@@ -23,4 +25,5 @@ add_executable(programUsagePrinter                                      src/main
 # test
 add_executable(programArgumentsParserTest                               src/test/cc/programArgumentsParserTest.cc)
 add_executable(defaultRadioProxyArgumentsResolverTest                   src/test/cc/defaultRadioProxyArgumentsResolverTest.cc)
+add_executable(udpProxyArgumentsResolverTest                            src/test/cc/udpProxyArgumentsResolverTest.cc)
 add_executable(responseResolverTest                                     src/test/cc/responseResolverTest.cc)
