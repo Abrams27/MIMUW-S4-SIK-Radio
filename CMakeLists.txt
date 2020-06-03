@@ -12,7 +12,9 @@ add_executable(outputAudioStreamSink                                    src/main
 
 add_executable(defaultRadioProxyArgumentsResolver                       src/main/cc/proxy/program-arguments-resolvers/defaultRadioProxyArgumentsResolver.cc)
 
-add_executable(responseParser                                           src/main/cc/proxy/response-parser/responseParser.cc)
+add_executable(responseResolver                                         src/main/cc/proxy/response-resolver/responseResolver.cc)
+
+add_executable(tcpClient                                                src/main/cc/proxy/tcp-client/tcpClient.cc)
 # utils
 add_executable(programArgumentsParser                                   src/main/cc/utils/programArgumentsParser.cc)
 add_executable(programUsagePrinter                                      src/main/cc/utils/programUsagePrinter.cc)
@@ -22,5 +24,3 @@ add_executable(programUsagePrinter                                      src/main
 add_executable(programArgumentsParserTest                               src/test/cc/programArgumentsParserTest.cc)
 add_executable(defaultRadioProxyArgumentsResolverTest                   src/test/cc/defaultRadioProxyArgumentsResolverTest.cc)
 add_executable(responseResolverTest                                     src/test/cc/responseResolverTest.cc)
-add_executable(responseResolverNoMetadataTest                           src/test/cc/response-resolver-tests/responseResolverNoMetadataTest.cc)
-add_executable(responseResolverMetadataTest                             src/test/cc/response-resolver-tests/responseResolverMetadataTest.cc)

@@ -44,3 +44,6 @@ radio-proxy
 /responseResolverNoMetadataTest
 /out
 /err
+*.mp3
+meta.txt
+responseResolverTest
