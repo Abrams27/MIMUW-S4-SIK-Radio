@@ -13,3 +13,4 @@ echo -e "running tests ..."
 ./responseResolverTest
 ./udpProxyArgumentsResolverTest
 ./udpClientsStorageTest
+./radioClientCommunicationParserTest

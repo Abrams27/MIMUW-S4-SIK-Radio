@@ -17,8 +17,10 @@ add_executable(responseResolver                                         src/main
 
 add_executable(udpClientsStorage                                        src/main/cc/proxy/udp-client/udpClientsStorage.cc)
 
+add_executable(radioClientCommunicationParser                           src/main/cc/proxy/radio-client-communication-parser/radioClientCommunicationParser.cc)
+
 add_executable(tcpClient                                                src/main/cc/proxy/tcp-client/tcpClient.cc)
-# utils
+
 add_executable(programArgumentsParser                                   src/main/cc/utils/programArgumentsParser.cc)
 add_executable(programUsagePrinter                                      src/main/cc/utils/programUsagePrinter.cc)
 
@@ -29,3 +31,4 @@ add_executable(defaultRadioProxyArgumentsResolverTest                   src/test
 add_executable(udpProxyArgumentsResolverTest                            src/test/cc/udpProxyArgumentsResolverTest.cc)
 add_executable(responseResolverTest                                     src/test/cc/responseResolverTest.cc)
 add_executable(udpClientsStorageTest                                    src/test/cc/udpClientsStorageTest.cc)
+add_executable(radioClientCommunicationParserTest                       src/test/cc/radioClientCommunicationParserTest.cc)

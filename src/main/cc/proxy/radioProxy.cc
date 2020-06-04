@@ -29,7 +29,7 @@ int main(int argc, char *argv[]) {
 
   std::unique_ptr<ResponseResolver> responseResolver
     = std::make_unique<ResponseResolver>(true, argv[0]);
-  std::unique_ptr<TcpClient> tcpClient = std::make_unique<TcpClient>("waw02-03.ic.smcdn.pl", "8000", "/t043-1.mp3");
+  std::unique_ptr<TcpClient> tcpClient = std::make_unique<TcpClient>("178.32.107.151 ", "3639", "/stream");
   std::unique_ptr<AudioStreamSink> audioSink = AudioStreamSinkFactory::outputAudioStreamSink();
 
   tcpClient->sentRequest(true);
