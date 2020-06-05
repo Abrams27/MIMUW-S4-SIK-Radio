@@ -7,17 +7,25 @@ LDFLAGS =
 
 all: radio-proxy tests
 
-radio-proxy: radioProxy.o audioStreamSinkFactory.o outputAudioStreamSink.o programUsagePrinter.o responseResolver.o tcpClient.o udpClientsStorage.o radioClientCommunicationParser.o udpProxyArgumentsResolver.o defaultRadioProxyArgumentsResolver.o programArgumentsParser.o
+radio-proxy: radioProxy.o audioStreamSinkFactory.o outputAudioStreamSink.o programUsagePrinter.o responseResolver.o tcpClient.o udpClientsStorage.o radioClientCommunicationParser.o udpProxyArgumentsResolver.o defaultRadioProxyArgumentsResolver.o programArgumentsParser.o udpClient.o radioClientCommunicationParser.o radioClientsConnectionWorker.o udpAudioStreamSink.o
 	$(CC) $(LDFLAGS) -o $@ $^
 
 
-radioProxy.o: src/main/cc/proxy/radioProxy.cc src/main/cc/proxy/audio-stream-sinks/audioStreamSinkFactory.h src/main/cc/proxy/audio-stream-sinks/audioStreamSink.h src/main/cc/proxy/audio-stream-sinks/outputAudioStreamSink.h src/main/cc/utils/programUsagePrinter.h src/main/cc/proxy/response-resolver/responseResolver.h src/main/cc/proxy/tcp-client/tcpClient.h src/main/cc/utils/programUsagePrinter.h src/main/cc/proxy/program-arguments-resolvers/udpProxyArgumentsResolver.h src/main/cc/proxy/program-arguments-resolvers/defaultRadioProxyArgumentsResolver.h
+radioProxy.o: src/main/cc/proxy/radioProxy.cc src/main/cc/proxy/audio-stream-sinks/audioStreamSinkFactory.h src/main/cc/proxy/audio-stream-sinks/audioStreamSink.h src/main/cc/proxy/audio-stream-sinks/outputAudioStreamSink.h src/main/cc/proxy/audio-stream-sinks/udpAudioStreamSink.h src/main/cc/utils/programUsagePrinter.h src/main/cc/proxy/response-resolver/responseResolver.h src/main/cc/proxy/tcp-client/tcpClient.h src/main/cc/utils/programUsagePrinter.h src/main/cc/proxy/program-arguments-resolvers/udpProxyArgumentsResolver.h src/main/cc/proxy/program-arguments-resolvers/defaultRadioProxyArgumentsResolver.h src/main/cc/proxy/radioClientsConnectionWorker.h src/main/cc/proxy/udp-client/udpClient.h
 	$(CC) $(CFLAGS) -c $<
 
-audioStreamSinkFactory.o: src/main/cc/proxy/audio-stream-sinks/audioStreamSinkFactory.cc src/main/cc/proxy/audio-stream-sinks/audioStreamSinkFactory.h src/main/cc/proxy/audio-stream-sinks/audioStreamSink.h src/main/cc/proxy/audio-stream-sinks/outputAudioStreamSink.h
+
+radioClientsConnectionWorker.o: src/main/cc/proxy/radioClientsConnectionWorker.cc src/main/cc/proxy/radioClientsConnectionWorker.h src/main/cc/proxy/udp-client/udpClientsStorage.h src/main/cc/proxy/udp-client/udpClient.h src/main/cc/proxy/radio-client-communication-parser/radioClientCommunicationParser.h
+	$(CC) $(CFLAGS) -c $<
+
+
+audioStreamSinkFactory.o: src/main/cc/proxy/audio-stream-sinks/audioStreamSinkFactory.cc src/main/cc/proxy/audio-stream-sinks/audioStreamSinkFactory.h src/main/cc/proxy/audio-stream-sinks/audioStreamSink.h src/main/cc/proxy/audio-stream-sinks/outputAudioStreamSink.h src/main/cc/proxy/audio-stream-sinks/udpAudioStreamSink.h
 	$(CC) $(CFLAGS) -c $<
 
 outputAudioStreamSink.o: src/main/cc/proxy/audio-stream-sinks/outputAudioStreamSink.cc src/main/cc/proxy/audio-stream-sinks/outputAudioStreamSink.h src/main/cc/proxy/audio-stream-sinks/audioStreamSink.h
+	$(CC) $(CFLAGS) -c $<
+
+udpAudioStreamSink.o: src/main/cc/proxy/audio-stream-sinks/udpAudioStreamSink.cc src/main/cc/proxy/audio-stream-sinks/udpAudioStreamSink.h src/main/cc/proxy/audio-stream-sinks/audioStreamSink.h src/main/cc/proxy/udp-client/udpClient.h  src/main/cc/proxy/udp-client/udpClientsStorage.h
 	$(CC) $(CFLAGS) -c $<
 
 
@@ -28,7 +36,7 @@ responseResolver.o: src/main/cc/proxy/response-resolver/responseResolver.cc src/
 defaultRadioProxyArgumentsResolver.o: src/main/cc/proxy/program-arguments-resolvers/defaultRadioProxyArgumentsResolver.cc src/main/cc/proxy/program-arguments-resolvers/defaultRadioProxyArgumentsResolver.h src/main/cc/utils/programArgumentsParser.h src/main/cc/utils/programUsagePrinter.h
 	$(CC) $(CFLAGS) -c $<
 
-udpProxyArgumentsResolver.o: src/main/cc/proxy/program-arguments-resolvers/udpProxyArgumentsResolver.cc src/main/cc/proxy/program-arguments-resolvers/udpProxyArgumentsResolver.h src/main/cc/utils/programArgumentsParser.h src/main/cc/utils/programUsagePrinter.h
+udpProxyArgumentsResolver.o: src/main/cc/proxy/program-arguments-resolvers/udpProxyArgumentsResolver.cc src/main/cc/proxy/program-arguments-resolvers/udpProxyArgumentsResolver.h src/main/cc/utils/programArgumentsParser.h src/main/cc/utils/programUsagePrinter.h src/main/cc/proxy/radio-client-communication-parser/radioClientCommunicationParser.h
 	$(CC) $(CFLAGS) -c $<
 
 
@@ -36,9 +44,11 @@ tcpClient.o: src/main/cc/proxy/tcp-client/tcpClient.cc src/main/cc/proxy/tcp-cli
 	$(CC) $(CFLAGS) -c $<
 
 
-udpClientsStorage.o: src/main/cc/proxy/udp-client/udpClientsStorage.cc src/main/cc/proxy/udp-client/udpClientsStorage.h
+udpClient.o: src/main/cc/proxy/udp-client/udpClient.cc src/main/cc/proxy/udp-client/udpClient.h
 	$(CC) $(CFLAGS) -c $<
 
+udpClientsStorage.o: src/main/cc/proxy/udp-client/udpClientsStorage.cc src/main/cc/proxy/udp-client/udpClientsStorage.h
+	$(CC) $(CFLAGS) -c $<
 
 radioClientCommunicationParser.o: src/main/cc/proxy/radio-client-communication-parser/radioClientCommunicationParser.cc src/main/cc/proxy/radio-client-communication-parser/radioClientCommunicationParser.h
 	$(CC) $(CFLAGS) -c $<
@@ -62,7 +72,7 @@ programArgumentsParserTest.o: src/test/cc/programArgumentsParserTest.cc src/main
 	$(CC) $(CFLAGS) -c $<
 
 
-responseResolverTest: responseResolverTest.o responseResolver.o programUsagePrinter.o audioStreamSinkFactory.o outputAudioStreamSink.o
+responseResolverTest: responseResolverTest.o responseResolver.o programUsagePrinter.o audioStreamSinkFactory.o outputAudioStreamSink.o udpAudioStreamSink.o udpClient.o udpClientsStorage.o radioClientCommunicationParser.o
 	$(CC) $(LDFLAGS) -o $@ $^
 
 responseResolverTest.o: src/test/cc/responseResolverTest.cc src/main/cc/proxy/response-resolver/responseResolver.h src/main/cc/proxy/audio-stream-sinks/audioStreamSinkFactory.h

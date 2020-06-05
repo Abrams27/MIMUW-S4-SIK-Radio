@@ -5,7 +5,6 @@
 UdpClientsStorage::UdpClientsStorage(int timeout) :
   timeout(timeout) { }
 
-
 void UdpClientsStorage::addNewClient(std::pair<uint16_t, uint32_t> clientInfo) {
   mutex.lock();
 
@@ -78,7 +77,6 @@ bool UdpClientsStorage::removeClientIfTimeouted(time_t actualTimestamp, const st
   return isTimeouted;
 }
 
-#include <iostream>
 bool UdpClientsStorage::isTimeoutReached(std::time_t oldTimestamp, std::time_t newTimestamp) {
   int timeDifference = (int) difftime(newTimestamp, oldTimestamp);
 

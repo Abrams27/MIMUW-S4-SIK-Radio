@@ -1,11 +1,13 @@
 #include <memory>
 #include <csignal>
+#include <thread>
 
 #include "audio-stream-sinks/audioStreamSinkFactory.h"
 #include "response-resolver/responseResolver.h"
 #include "tcp-client/tcpClient.h"
 #include "program-arguments-resolvers/defaultRadioProxyArgumentsResolver.h"
 #include "program-arguments-resolvers/udpProxyArgumentsResolver.h"
+#include "radioClientsConnectionWorker.h"
 
 #include <iostream>
 
@@ -15,8 +17,8 @@ void intSignalHandler(int signal) {
   run = false;
 }
 
-void xd() {
-
+void xd(std::shared_ptr<RadioClientsConnectionWorker> &radioClientsConnectionWorker) {
+  radioClientsConnectionWorker->work("1", "2", "3");
 }
 
 int main(int argc, char *argv[]) {
@@ -40,10 +42,18 @@ int main(int argc, char *argv[]) {
   std::unique_ptr<TcpClient> tcpClient
     = std::make_unique<TcpClient>(host, port, resource, timeout);
 
+  std::shared_ptr<UdpClient> udpClient
+    = std::make_shared<UdpClient>(2137);
 
+  std::shared_ptr<UdpClientsStorage> udpClientsStorage =
+    std::make_shared<UdpClientsStorage>(10);
 
+  std::unique_ptr<AudioStreamSink> audioSink = AudioStreamSinkFactory::udpAudioStreamSink(udpClient, udpClientsStorage);
 
-  std::unique_ptr<AudioStreamSink> audioSink = AudioStreamSinkFactory::outputAudioStreamSink();
+  std::shared_ptr<RadioClientsConnectionWorker> radioClientsConnectionWorker
+    = std::make_shared<RadioClientsConnectionWorker>(udpClient, udpClientsStorage);
+
+  std::thread t1([radioClientsConnectionWorker]{radioClientsConnectionWorker->work("1", "2", "3");});
 
   tcpClient->sentRequest(defaultRadioProxyArgumentsResolver->getMetadataOrDefault());
   responseResolver->parseStatusLine(tcpClient->getResponseLine());
@@ -55,6 +65,7 @@ int main(int argc, char *argv[]) {
   size_t interval = responseResolver->getAudioBlockSize();
 
   while(tcpClient->hasPreviousReadSucceed() && run) {
+    std::cout << " 1";
     std::string s = tcpClient->getResponseChunk(interval);
     if (tcpClient->hasPreviousReadSucceed()) {
       audioSink->handleAudioData(s);
@@ -73,5 +84,6 @@ int main(int argc, char *argv[]) {
     }
   }
 
+//  t1.join();
   return 0;
 }

@@ -24,7 +24,7 @@ public:
   std::string getMessageWithIam(const std::string &host, const std::string &port, const std::string &resource);
 
 private:
-  const size_t maxMessageDataSize = 65535;
+  const size_t maxMessageDataSize = 8192;
 
   uint16_t stringToInt16(std::string string);
   CommunicationType getCommunicationTypeForNumber(uint16_t numberAfterConversion);

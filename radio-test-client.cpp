@@ -63,7 +63,7 @@ void keepAlive(int sock, struct sockaddr_in& my_address) {
   MessageHeader keepHeader = constructMessageHeader(KEEPALIVE, 0);
 
   while (true) {
-    std::cout << "keep\n";
+//    std::cout << "keep\n";
     socklen_t l = (socklen_t) sizeof(my_address);
     ssize_t s = sendto(sock, &keepHeader, 4, 0, (struct sockaddr *) &my_address, l);
 
@@ -131,26 +131,26 @@ int main(int argc, char *argv[]) {
   rcva_len = (socklen_t) sizeof(my_address);
   snd_len = sendto(sock, &discoverHeader, 4, 0, (struct sockaddr *) &my_address, rcva_len);
 
-  std::cout << snd_len << " bytes sent.\n";
+//  std::cout << snd_len << " bytes sent.\n";
 
   rcv_len = recvfrom(sock, buffer, BLOCK_SIZE, 0, (struct sockaddr *) &srvr_address, &rcva_len);
 
-  std::cout << rcv_len << " bytes received.\n";
-  
+//  std::cout << rcv_len << " bytes received.\n";
+//std::cout << std::string(buffer, rcv_len);
   MessageHeader header;
   MessageHeaderData data;
 
   memcpy(&header, buffer, 4);
   data = parseProxyCommunicationHeader(header);
-  std::cout << "receive: " << data.type << " " << data.length << '\n';
-
+//  std::cout << "receive: " << data.type << " " << data.length << '\n';
+//  std::cout << data;
 
   std::thread t(keepAlive, sock, std::ref(my_address));
 
 
   while (true) {
     rcv_len = recvfrom(sock, buffer, BLOCK_SIZE, 0, (struct sockaddr *) &srvr_address, &rcva_len);
-    std::cout << rcv_len << " bytes received.\n";
+//    std::cout << rcv_len << " bytes received.\n";
 
     if (rcv_len == -1) {
       std::cout << "recvfrom error\n";
@@ -160,7 +160,11 @@ int main(int argc, char *argv[]) {
 
     memcpy(&header, buffer, 4);
     data = parseProxyCommunicationHeader(header);
-    std::cout << "receive: " << data.type << " " << data.length << '\n';
+//    std::cout << "receive: " << data.type << " " << data.length << '\n';
+
+    for (int i = 4; i < 4 + data.length; i++) {
+      std::cout << buffer[i];
+    }
   }
 
 

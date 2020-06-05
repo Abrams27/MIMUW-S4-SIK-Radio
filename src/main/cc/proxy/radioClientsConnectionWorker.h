@@ -7,9 +7,9 @@
 #include "udp-client/udpClientsStorage.h"
 #include "radio-client-communication-parser/radioClientCommunicationParser.h"
 
-class radioClientsConnectionWorker {
+class RadioClientsConnectionWorker {
 public:
-  radioClientsConnectionWorker(std::shared_ptr <UdpClient> udpClient, std::shared_ptr <UdpClientsStorage> udpClientsStorage);
+  RadioClientsConnectionWorker(std::shared_ptr <UdpClient> udpClient, std::shared_ptr <UdpClientsStorage> udpClientsStorage);
 
   void work(const std::string &host, const std::string &port, const std::string &resource);
   void interrupt();
