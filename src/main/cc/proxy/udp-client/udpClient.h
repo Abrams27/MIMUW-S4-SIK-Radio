@@ -18,11 +18,12 @@ public:
 
   void sendMessage(const std::string &message, uint16_t port, uint32_t address);
   void sendMessage(const std::string &message, struct sockaddr_in clientAddress);
+  sockaddr_in getLatestClientAddress();
   std::string readMessage(size_t size);
 
 private:
   int socketId;
-  struct sockaddr_in latestServerAddress;
+  struct sockaddr_in latestClientAddress;
 
   void initSocket();
 };

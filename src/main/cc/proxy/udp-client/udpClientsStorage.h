@@ -14,6 +14,7 @@ public:
   void addNewClient(std::pair<uint16_t, uint32_t> clientInfo);
   bool updateClientTimeoutAndRemoveIfExpired(std::pair<uint16_t, uint32_t> clientInfo);
   std::vector<std::pair<uint16_t, uint32_t> > getActiveClients();
+  bool isClientSaved(std::pair<uint16_t, uint32_t> clientInfo);
 
 private:
   std::mutex mutex;

@@ -52,9 +52,9 @@ std::string UdpClient::readMessage(size_t size) {
   std::string buffer;
   buffer.resize(size);
 
-  socklen_t rcvaLen = sizeof(latestServerAddress);
+  socklen_t rcvaLen = sizeof(latestClientAddress);
 
-  ssize_t readLen = recvfrom(socketId, &buffer[0], size, 0, (struct sockaddr *) &latestServerAddress, &rcvaLen);
+  ssize_t readLen = recvfrom(socketId, &buffer[0], size, 0, (struct sockaddr *) &latestClientAddress, &rcvaLen);
 
   if (readLen < 0) {
     exit(1);
@@ -64,6 +64,13 @@ std::string UdpClient::readMessage(size_t size) {
 }
 
 
+
+sockaddr_in UdpClient::getLatestClientAddress() {
+  return latestClientAddress;
+}
+
+
 UdpClient::~UdpClient() {
   close(socketId);
 }
+

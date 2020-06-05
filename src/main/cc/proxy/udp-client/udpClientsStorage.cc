@@ -15,6 +15,17 @@ void UdpClientsStorage::addNewClient(std::pair<uint16_t, uint32_t> clientInfo) {
 }
 
 
+bool UdpClientsStorage::isClientSaved(std::pair<uint16_t, uint32_t> clientInfo) {
+  mutex.lock();
+
+  bool result = clientsMap.count(clientInfo);
+
+  mutex.unlock();
+
+  return result;
+}
+
+
 bool UdpClientsStorage::updateClientTimeoutAndRemoveIfExpired(std::pair<uint16_t, uint32_t> clientInfo) {
   mutex.lock();
 
