@@ -129,7 +129,6 @@ bool TcpClient::hasPreviousReadSucceed() {
 }
 
 TcpClient::~TcpClient() {
-  std::cout << "XDDDDD?";
   fclose(connectionFile);
   close(socketId);
 }
