@@ -16,6 +16,7 @@ enum CommunicationType {
 
 class RadioClientCommunicationParser {
 public:
+  RadioClientCommunicationParser() = default;
 
   CommunicationType parseHeader(std::string header);
   std::vector<std::string> getMessageWithAudio(const std::string &audioData);

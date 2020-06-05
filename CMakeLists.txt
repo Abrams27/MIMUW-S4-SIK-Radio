@@ -9,6 +9,7 @@ add_executable(radio-proxy                                              src/main
 
 add_executable(audioStreamSinkFactory                                   src/main/cc/proxy/audio-stream-sinks/audioStreamSinkFactory.cc)
 add_executable(outputAudioStreamSink                                    src/main/cc/proxy/audio-stream-sinks/outputAudioStreamSink.cc)
+add_executable(udpAudioStreamSink                                       src/main/cc/proxy/audio-stream-sinks/udpAudioStreamSink.cc)
 
 add_executable(defaultRadioProxyArgumentsResolver                       src/main/cc/proxy/program-arguments-resolvers/defaultRadioProxyArgumentsResolver.cc)
 add_executable(udpProxyArgumentsResolver                                src/main/cc/proxy/program-arguments-resolvers/udpProxyArgumentsResolver.cc)
@@ -16,6 +17,7 @@ add_executable(udpProxyArgumentsResolver                                src/main
 add_executable(responseResolver                                         src/main/cc/proxy/response-resolver/responseResolver.cc)
 
 add_executable(udpClientsStorage                                        src/main/cc/proxy/udp-client/udpClientsStorage.cc)
+add_executable(udpClient                                                src/main/cc/proxy/udp-client/udpClient.cc)
 
 add_executable(radioClientCommunicationParser                           src/main/cc/proxy/radio-client-communication-parser/radioClientCommunicationParser.cc)
 

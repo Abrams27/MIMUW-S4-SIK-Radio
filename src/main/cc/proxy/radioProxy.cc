@@ -15,6 +15,9 @@ void intSignalHandler(int signal) {
   run = false;
 }
 
+void xd() {
+
+}
 
 int main(int argc, char *argv[]) {
   std::signal(SIGINT, intSignalHandler);
@@ -36,6 +39,9 @@ int main(int argc, char *argv[]) {
 
   std::unique_ptr<TcpClient> tcpClient
     = std::make_unique<TcpClient>(host, port, resource, timeout);
+
+
+
 
   std::unique_ptr<AudioStreamSink> audioSink = AudioStreamSinkFactory::outputAudioStreamSink();
 
