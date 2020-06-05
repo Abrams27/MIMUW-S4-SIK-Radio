@@ -67,7 +67,6 @@ void TcpClient::startConnection(struct addrinfo *addrResult) {
 void TcpClient::sentRequest(bool metadataRequired) {
   int requestCode = 0;
 
-  std::cout << connectionFile;
   if (metadataRequired) {
     requestCode = sentRequestMetadata();
   } else {
@@ -75,7 +74,6 @@ void TcpClient::sentRequest(bool metadataRequired) {
   }
 
   if (requestCode < 0) {
-    std::cout << "elo";
     exit(1);
   }
 }

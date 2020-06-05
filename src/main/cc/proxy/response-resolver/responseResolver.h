@@ -35,7 +35,7 @@ private:
   bool hasHeadersEndedFlag = false;
   bool hasMetadataDetected = false;
 
-  size_t metadataInterval = 0;
+  size_t metadataInterval = 65535;
 
   bool isStatusLineAcceptable(const std::string &statusLine);
   bool isMetadataHeader(const std::string &header);

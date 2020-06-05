@@ -9,8 +9,7 @@
 class TcpClient {
 public:
   TcpClient(std::string host, std::string port, std::string resource, int timeout = 5);
-
-  virtual ~TcpClient();
+  ~TcpClient();
 
   void sentRequest(bool metadataRequired);
   std::string getResponseLine();

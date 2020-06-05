@@ -80,7 +80,7 @@ int  UdpProxyArgumentsResolver::getIntArgumentOrExit(const std::string &flag) {
 
 void  UdpProxyArgumentsResolver::exitIfIntArgumentNotDefined(const std::string &flag) {
   if (!programArgumentsParser->isIntArgumentDefined(flag)) {
-    programUsagePrinter->printUsageAndExitWith1();
+//    programUsagePrinter->printUsageAndExitWith1();
   }
 }
 
