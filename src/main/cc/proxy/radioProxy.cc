@@ -22,8 +22,8 @@ int main(int argc, char *argv[]) {
   std::unique_ptr<DefaultRadioProxyArgumentsResolver> defaultRadioProxyArgumentsResolver
     = std::make_unique<DefaultRadioProxyArgumentsResolver>(argc, argv);
 
-//  std::unique_ptr<UdpProxyArgumentsResolver> udpProxyArgumentsResolver
-//    = std::make_unique<UdpProxyArgumentsResolver>(argc, argv);
+  std::unique_ptr<UdpProxyArgumentsResolver> udpProxyArgumentsResolver
+    = std::make_unique<UdpProxyArgumentsResolver>(argc, argv);
 
   std::unique_ptr<ResponseResolver> responseResolver
     = std::make_unique<ResponseResolver>(defaultRadioProxyArgumentsResolver->getMetadataOrDefault(), argv[0]);

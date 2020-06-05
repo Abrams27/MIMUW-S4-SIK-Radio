@@ -34,7 +34,12 @@ void UdpProxyArgumentsResolver::parseRequiredArgumentsOrExit() {
 }
 
 void UdpProxyArgumentsResolver::parsePortOrExit() {
-  port = getIntArgumentOrExit(portFlag);
+  if (programArgumentsParser->isIntArgumentDefined(portFlag)) {
+    port = programArgumentsParser->getIntArgument(portFlag);
+    isPortDefined = true;
+  } else if (programArgumentsParser->isArgumentDefined(portFlag)) {
+    programUsagePrinter->printUsageAndExitWith1();
+  }
 }
 
 
@@ -44,7 +49,7 @@ void UdpProxyArgumentsResolver::parseOptionalArguments() {
 }
 
 void UdpProxyArgumentsResolver::parseTimeout() {
-  if (programArgumentsParser->isIntArgumentDefined(timeoutFlag)) {
+  if (isPortDefined && programArgumentsParser->isIntArgumentDefined(timeoutFlag)) {
     parseTimeoutIfDefinedOrExit();
   } else if (programArgumentsParser->isArgumentDefined(timeoutFlag)) {
     programUsagePrinter->printUsageAndExitWith1();
@@ -69,18 +74,9 @@ void UdpProxyArgumentsResolver::parseMulticastIfDefined() {
   if (isMulticastDefined) {
     multicast = programArgumentsParser->getArgument(multicastFlag);
   }
-}
 
-
-int  UdpProxyArgumentsResolver::getIntArgumentOrExit(const std::string &flag) {
-  exitIfIntArgumentNotDefined(flag);
-
-  return programArgumentsParser->getIntArgument(flag);
-}
-
-void  UdpProxyArgumentsResolver::exitIfIntArgumentNotDefined(const std::string &flag) {
-  if (!programArgumentsParser->isIntArgumentDefined(flag)) {
-//    programUsagePrinter->printUsageAndExitWith1();
+  if (!isPortDefined && isMulticastDefined) {
+    programUsagePrinter->printUsageAndExitWith1();
   }
 }
 

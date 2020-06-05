@@ -16,7 +16,7 @@ const char *PORT_FLAG = "-P";
 const int PORT_VALUE = 2137;
 const char *PORT_VALUE_STRING = "2137";
 
-const char *MULTICAST_FLAG = "-M";
+const char *MULTICAST_FLAG = "-B";
 const char *MULTICAST_VALUE = "2137.2137.2137.2137";
 
 const char *TIMEOUT_FLAG = "-T";

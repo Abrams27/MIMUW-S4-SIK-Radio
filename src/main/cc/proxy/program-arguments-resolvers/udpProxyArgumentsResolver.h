@@ -22,9 +22,10 @@ private:
 
   const std::string portFlag = "-P";
 
-  const std::string multicastFlag = "-M";
+  const std::string multicastFlag = "-B";
   const std::string timeoutFlag = "-T";
 
+  bool isPortDefined = false;
   int port;
 
   bool isMulticastDefined;
@@ -41,8 +42,6 @@ private:
   void parseMulticast();
   void parseMulticastIfDefined();
 
-  int getIntArgumentOrExit(const std::string &flag);
-  void exitIfIntArgumentNotDefined(const std::string &flag);
 };
 
 
