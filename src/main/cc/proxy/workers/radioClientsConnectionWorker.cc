@@ -9,17 +9,20 @@ RadioClientsConnectionWorker::RadioClientsConnectionWorker(std::shared_ptr<UdpCl
 
 
 void RadioClientsConnectionWorker::work(const std::string &host, const std::string &port, const std::string &resource) {
-  while(!interrupted) {
+  while(!udpClient->hasPreviousOperationBeenInterrupted() && !interrupted) {
     workWhileNotInterrupted(host, port, resource);
   }
 }
 
 void RadioClientsConnectionWorker::workWhileNotInterrupted(const std::string &host, const std::string &port, const std::string &resource) {
   std::string header = udpClient->readMessage(4);
-  sockaddr_in client = udpClient->getLatestClientAddress();
-  CommunicationType communicationType = radioClientCommunicationParser->parseHeader(header);
 
-  resolveCommunicationType(host, port, resource, client, communicationType);
+  if (!udpClient->hasPreviousOperationBeenInterrupted() && !udpClient->hasPreviousOperationTimeouted()) {
+    sockaddr_in client = udpClient->getLatestClientAddress();
+    CommunicationType communicationType = radioClientCommunicationParser->parseHeader(header);
+
+    resolveCommunicationType(host, port, resource, client, communicationType);
+  }
 }
 
 void RadioClientsConnectionWorker::resolveCommunicationType(const std::string &host, const std::string &port, const std::string &resource, const sockaddr_in &client, const CommunicationType &communicationType) {
@@ -32,24 +35,16 @@ void RadioClientsConnectionWorker::resolveCommunicationType(const std::string &h
   }
 }
 
-
-#include <iostream>
-
 void RadioClientsConnectionWorker::resolveCommunicationTypeDiscover(const std::string &host, const std::string &port, const std::string &resource, const sockaddr_in &client) {
   auto clientAddress = getClientAddress(client);
   std::string message = radioClientCommunicationParser->getMessageWithIam(host, port, resource);
 
-  std::cout << "DISCOVER: ";
-  std::cout << "port: " << client.sin_port << "adress: " << client.sin_addr.s_addr << std::endl;
   udpClientsStorage->addNewClient(clientAddress);
   udpClient->sendMessage(message, client);
 }
 
 void RadioClientsConnectionWorker::resolveCommunicationTypeKeepalive(const sockaddr_in &client) {
   auto clientAddress = getClientAddress(client);
-
-  std::cout << "KEEPALIVE: ";
-  std::cout << "port: " << client.sin_port << "adress: " << client.sin_addr.s_addr << std::endl;
 
   if (udpClientsStorage->isClientSaved(clientAddress)) {
     udpClientsStorage->updateClientTimeoutAndRemoveIfExpired(clientAddress);

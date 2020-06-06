@@ -1,12 +1,10 @@
 #include "udpClient.h"
-#include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
-#include <stdio.h>
-#include <string.h>
+#include <cstring>
 #include <unistd.h>
 #include <cstdlib>
-
+#include <errno.h>
 
 UdpClient::UdpClient(int port) {
   struct sockaddr_in serverAddress;
@@ -36,14 +34,27 @@ void UdpClient::sendMessage(const std::string &message, uint16_t port, uint32_t 
   clientAddress.sin_addr.s_addr = address;
   clientAddress.sin_port = port;
 
-  if (sendto(socketId, &message[0], message.size(), 0, (struct sockaddr *) &clientAddress, (socklen_t) sizeof(clientAddress)) < message.size()) {
-    exit(1);
+  hasPreviousOperationBeenInterruptedFlag = false;
+  hasPreviousOperationTimeoutedFlag = false;
+
+  if (sendto(socketId, &message[0], message.size(), 0, (struct sockaddr *) &clientAddress, (socklen_t) sizeof(clientAddress)) < 0) {
+    checkErrnoAndUpdateInterruptFlagOrExit();
   }
 }
 
-
 void UdpClient::sendMessage(const std::string &message, struct sockaddr_in clientAddress) {
-  if (sendto(socketId, &message[0], message.size(), 0, (struct sockaddr *) &clientAddress, (socklen_t) sizeof(clientAddress)) < message.size()) {
+  hasPreviousOperationBeenInterruptedFlag = false;
+  hasPreviousOperationTimeoutedFlag = false;
+
+  if (sendto(socketId, &message[0], message.size(), 0, (struct sockaddr *) &clientAddress, (socklen_t) sizeof(clientAddress)) < 0) {
+    checkErrnoAndUpdateInterruptFlagOrExit();
+  }
+}
+
+void UdpClient::checkErrnoAndUpdateInterruptFlagOrExit() {
+  if (errno == EINTR) {
+    hasPreviousOperationBeenInterruptedFlag = true;
+  } else {
     exit(1);
   }
 }
@@ -51,18 +62,27 @@ void UdpClient::sendMessage(const std::string &message, struct sockaddr_in clien
 std::string UdpClient::readMessage(size_t size) {
   std::string buffer;
   buffer.resize(size);
-
   socklen_t rcvaLen = sizeof(latestClientAddress);
 
-  ssize_t readLen = recvfrom(socketId, &buffer[0], size, 0, (struct sockaddr *) &latestClientAddress, &rcvaLen);
+  hasPreviousOperationBeenInterruptedFlag = false;
+  hasPreviousOperationTimeoutedFlag = false;
 
-  if (readLen < 0) {
-    exit(1);
+  if (recvfrom(socketId, &buffer[0], size, 0, (struct sockaddr *) &latestClientAddress, &rcvaLen) < 0) {
+    checkErrnoAndUpdateInterruptFlagAndTimeoutFlagOrExit();
   }
 
   return buffer;
 }
 
+void UdpClient::checkErrnoAndUpdateInterruptFlagAndTimeoutFlagOrExit() {
+  if (errno == EINTR) {
+    hasPreviousOperationBeenInterruptedFlag = true;
+  } else if (errno == EAGAIN) {
+    hasPreviousOperationTimeoutedFlag = true;
+  } else {
+    exit(1);
+  }
+}
 
 
 sockaddr_in UdpClient::getLatestClientAddress() {
@@ -72,5 +92,13 @@ sockaddr_in UdpClient::getLatestClientAddress() {
 
 UdpClient::~UdpClient() {
   close(socketId);
+}
+
+bool UdpClient::hasPreviousOperationBeenInterrupted() {
+  return hasPreviousOperationBeenInterruptedFlag;
+}
+
+bool UdpClient::hasPreviousOperationTimeouted() {
+  return hasPreviousOperationTimeoutedFlag;
 }
 

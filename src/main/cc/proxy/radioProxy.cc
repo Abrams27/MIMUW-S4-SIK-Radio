@@ -84,7 +84,6 @@ void workB(DefaultRadioProxyArgumentsResolver &defaultRadioProxyArgumentsResolve
 
 
 void workA(DefaultRadioProxyArgumentsResolver &defaultRadioProxyArgumentsResolver, char* programName) {
-  std::cout << "WORK A";
   std::string host = defaultRadioProxyArgumentsResolver.getHost();
   std::string port = std::to_string(defaultRadioProxyArgumentsResolver.getPort());
   std::string resource = defaultRadioProxyArgumentsResolver.getResource();

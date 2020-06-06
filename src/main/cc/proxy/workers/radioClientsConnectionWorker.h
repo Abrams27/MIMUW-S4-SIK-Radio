@@ -3,6 +3,7 @@
 
 
 #include <memory>
+#include <atomic>
 #include "../udp-client/udpClient.h"
 #include "../udp-client/udpClientsStorage.h"
 #include "../radio-client-communication-parser/radioClientCommunicationParser.h"
@@ -20,7 +21,7 @@ private:
 
   std::unique_ptr<RadioClientCommunicationParser> radioClientCommunicationParser;
 
-  bool interrupted;
+  std::atomic_bool interrupted;
 
   void workWhileNotInterrupted(const std::string &host, const std::string &port, const std::string &resource);
   void resolveCommunicationType(const std::string &host, const std::string &port, const std::string &resource, const sockaddr_in &client, const CommunicationType &communicationType);

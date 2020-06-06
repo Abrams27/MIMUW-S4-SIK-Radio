@@ -20,12 +20,20 @@ public:
   void sendMessage(const std::string &message, struct sockaddr_in clientAddress);
   sockaddr_in getLatestClientAddress();
   std::string readMessage(size_t size);
+  bool hasPreviousOperationBeenInterrupted();
+  bool hasPreviousOperationTimeouted();
 
 private:
   int socketId;
   struct sockaddr_in latestClientAddress;
 
+  bool hasPreviousOperationBeenInterruptedFlag = false;
+  bool hasPreviousOperationTimeoutedFlag = false;
+
   void initSocket();
+
+  void checkErrnoAndUpdateInterruptFlagOrExit();
+  void checkErrnoAndUpdateInterruptFlagAndTimeoutFlagOrExit();
 };
 
 
