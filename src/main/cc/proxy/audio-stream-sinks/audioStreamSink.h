@@ -6,8 +6,8 @@
 class AudioStreamSink {
 
 public:
-  virtual void handleAudioData(std::string audioData) = 0;
-  virtual void handleMetadata(std::string metadata) = 0;
+  virtual void handleAudioData(const std::string &audioData) = 0;
+  virtual void handleMetadata(const std::string &metadata) = 0;
 
   virtual ~AudioStreamSink() = default;
 };

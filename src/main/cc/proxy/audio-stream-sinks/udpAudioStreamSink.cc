@@ -7,7 +7,7 @@ UdpAudioStreamSink::UdpAudioStreamSink(std::shared_ptr<UdpClient> udpClient, std
   udpClientsStorage(std::move(udpClientsStorage)),
   radioClientCommunicationParser(std::make_unique<RadioClientCommunicationParser>()) { }
 
-void UdpAudioStreamSink::handleAudioData(std::string audioData) {
+void UdpAudioStreamSink::handleAudioData(const std::string &audioData) {
   auto messagesToSend = radioClientCommunicationParser->getMessageWithAudio(audioData);
 
   for (const auto &mesage : messagesToSend) {
@@ -16,7 +16,7 @@ void UdpAudioStreamSink::handleAudioData(std::string audioData) {
 }
 
 
-void UdpAudioStreamSink::handleMetadata(std::string metadata) {
+void UdpAudioStreamSink::handleMetadata(const std::string &metadata) {
   if (!metadata.empty()) {
     std::string messageToSend = radioClientCommunicationParser->getMessageWithMetadata(
       metadata);

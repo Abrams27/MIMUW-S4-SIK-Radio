@@ -36,7 +36,7 @@ int main(int argc, char *argv[]) {
   return 0;
 }
 
-void catchSiging(int signal) {
+void catchSiging(__attribute__((unused))  int signal) {
   radioProxyWorker->interrupt();
 
   if (isWokB) {

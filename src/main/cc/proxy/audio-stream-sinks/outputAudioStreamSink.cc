@@ -2,10 +2,10 @@
 
 #include "outputAudioStreamSink.h"
 
-void OutputAudioStreamSink::handleAudioData(std::string audioData) {
+void OutputAudioStreamSink::handleAudioData(const std::string &audioData) {
   std::cout << audioData;
 }
 
-void OutputAudioStreamSink::handleMetadata(std::string metadata) {
+void OutputAudioStreamSink::handleMetadata(const std::string &metadata) {
   std::cerr << metadata;
 }

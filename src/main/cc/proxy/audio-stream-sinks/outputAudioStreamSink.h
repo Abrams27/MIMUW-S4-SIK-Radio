@@ -8,8 +8,8 @@ class OutputAudioStreamSink : public AudioStreamSink {
 public:
   OutputAudioStreamSink() = default;
 
-  void handleAudioData(std::string audioData) override;
-  void handleMetadata(std::string metadata) override;
+  void handleAudioData(const std::string &audioData) override;
+  void handleMetadata(const std::string &metadata) override;
 
   ~OutputAudioStreamSink() override = default;
 };

@@ -11,8 +11,8 @@ class UdpAudioStreamSink : public AudioStreamSink {
 public:
   UdpAudioStreamSink(std::shared_ptr<UdpClient> udpClient, std::shared_ptr<UdpClientsStorage> udpClientsStorage);
 
-  void handleAudioData(std::string audioData) override;
-  void handleMetadata(std::string metadata) override;
+  void handleAudioData(const std::string &audioData) override;
+  void handleMetadata(const std::string &metadata) override;
 
   ~UdpAudioStreamSink() override = default;;
 
