@@ -1,10 +1,10 @@
 #ifndef MIMUW_S4_SIK_RADIO_DEFAULTRADIOPROXYARGUMENTSRESOLVER_H
 #define MIMUW_S4_SIK_RADIO_DEFAULTRADIOPROXYARGUMENTSRESOLVER_H
 
+#include <memory>
+
 #include "../../utils/programArgumentsParser.h"
 #include "../../utils/programUsagePrinter.h"
-
-#include <memory>
 
 class DefaultRadioProxyArgumentsResolver {
 

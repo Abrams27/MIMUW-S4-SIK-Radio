@@ -1,9 +1,9 @@
 #ifndef MIMUW_S4_SIK_RADIO_RADIOCLIENTSCONNECTIONWORKER_H
 #define MIMUW_S4_SIK_RADIO_RADIOCLIENTSCONNECTIONWORKER_H
 
-
 #include <memory>
 #include <atomic>
+
 #include "../udp-client/udpClient.h"
 #include "../udp-client/udpClientsStorage.h"
 #include "../radio-client-communication-parser/radioClientCommunicationParser.h"

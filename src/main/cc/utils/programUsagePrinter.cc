@@ -1,6 +1,6 @@
-#include "programUsagePrinter.h"
-
 #include <utility>
+
+#include "programUsagePrinter.h"
 
 ProgramUsagePrinter::ProgramUsagePrinter(char *programName) :
   programName(programName) {}

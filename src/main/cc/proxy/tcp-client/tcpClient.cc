@@ -1,5 +1,3 @@
-#include "tcpClient.h"
-
 #include <sys/socket.h>
 #include <netdb.h>
 #include <cstdio>
@@ -8,6 +6,9 @@
 #include <cstdlib>
 #include <iostream>
 #include <utility>
+
+#include "tcpClient.h"
+
 
 TcpClient::TcpClient(std::string host, std::string port, std::string resource, int timeout) :
   host(std::move(host)),

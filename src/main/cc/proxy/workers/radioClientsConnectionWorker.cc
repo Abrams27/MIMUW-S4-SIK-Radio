@@ -5,7 +5,8 @@
 RadioClientsConnectionWorker::RadioClientsConnectionWorker(std::shared_ptr<UdpClient> udpClient, std::shared_ptr<UdpClientsStorage> udpClientsStorage) :
   udpClient(std::move(udpClient)),
   udpClientsStorage(std::move(udpClientsStorage)),
-  radioClientCommunicationParser(std::make_unique<RadioClientCommunicationParser>()) { }
+  radioClientCommunicationParser(std::make_unique<RadioClientCommunicationParser>()),
+  interrupted(false) { }
 
 
 void RadioClientsConnectionWorker::work(const std::string &host, const std::string &port, const std::string &resource) {

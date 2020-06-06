@@ -1,15 +1,14 @@
-#include "udpClient.h"
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <cstring>
 #include <unistd.h>
 #include <cstdlib>
-#include <errno.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
+#include <cerrno>
 #include <arpa/inet.h>
 
-UdpClient::UdpClient(int port, std::string multicastAddress, bool multicastRequired) :
+#include "udpClient.h"
+
+UdpClient::UdpClient(int port, const std::string &multicastAddress, bool multicastRequired) :
   multicastRequired(multicastRequired) {
   struct sockaddr_in serverAddress;
 

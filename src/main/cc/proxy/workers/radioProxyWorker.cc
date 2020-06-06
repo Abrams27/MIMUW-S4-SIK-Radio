@@ -3,7 +3,8 @@
 RadioProxyWorker::RadioProxyWorker(std::shared_ptr<TcpClient> tcpClient, std::shared_ptr<ResponseResolver> responseResolver, std::shared_ptr<AudioStreamSink> audioStreamSink) :
   tcpClient(std::move(tcpClient)),
   responseResolver(std::move(responseResolver)),
-  audioStreamSink(std::move(audioStreamSink)) {}
+  audioStreamSink(std::move(audioStreamSink)),
+  interrupted(false) {}
 
 void RadioProxyWorker::work(bool metadataRead) {
   tcpClient->sentRequest(metadataRead);

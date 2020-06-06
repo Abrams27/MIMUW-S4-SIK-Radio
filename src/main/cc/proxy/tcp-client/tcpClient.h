@@ -4,6 +4,7 @@
 #include <string>
 #include <netdb.h>
 #include <memory>
+
 #include "../response-resolver/responseResolver.h"
 
 class TcpClient {

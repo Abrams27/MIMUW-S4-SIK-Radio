@@ -13,7 +13,7 @@
 
 class UdpClient {
 public:
-  UdpClient(int port, std::string multicastAddress, bool multicastRequired);
+  UdpClient(int port, const std::string &multicastAddress, bool multicastRequired);
   ~UdpClient();
 
   void sendMessage(const std::string &message, uint16_t port, uint32_t address);

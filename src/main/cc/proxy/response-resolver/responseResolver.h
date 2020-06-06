@@ -1,10 +1,10 @@
 #ifndef MIMUW_S4_SIK_RADIO_RESPONSERESOLVER_H
 #define MIMUW_S4_SIK_RADIO_RESPONSERESOLVER_H
 
+#include <memory>
+
 #include "../audio-stream-sinks/audioStreamSink.h"
 #include "../../utils/programUsagePrinter.h"
-
-#include <memory>
 
 class ResponseResolver {
 

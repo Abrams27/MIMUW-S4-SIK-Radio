@@ -3,7 +3,7 @@
 #include <arpa/inet.h>
 #include <cstring>
 
-CommunicationType RadioClientCommunicationParser::parseHeader(std::string header) {
+CommunicationType RadioClientCommunicationParser::parseHeader(const std::string &header) {
   uint16_t numberBeforeConversion = stringToInt16(header);
   uint16_t numberAfterConversion = ntohs(numberBeforeConversion);
 
@@ -37,7 +37,7 @@ std::string RadioClientCommunicationParser::getMessageWithIam(const std::string 
 }
 
 std::string RadioClientCommunicationParser::createIamMessage(const std::string &host, const std::string &port, const std::string &resource) {
-  return "radio: " + host + ":" + port + resource + " | HEY ; ) pozdro chillerka d-_-b |";
+  return "radio: " + host + ":" + port + resource + iamMessage;
 }
 
 

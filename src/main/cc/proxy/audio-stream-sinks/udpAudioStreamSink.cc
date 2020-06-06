@@ -10,16 +10,15 @@ UdpAudioStreamSink::UdpAudioStreamSink(std::shared_ptr<UdpClient> udpClient, std
 void UdpAudioStreamSink::handleAudioData(const std::string &audioData) {
   auto messagesToSend = radioClientCommunicationParser->getMessageWithAudio(audioData);
 
-  for (const auto &mesage : messagesToSend) {
-    sendMessageToClients(mesage);
+  for (const auto &message : messagesToSend) {
+    sendMessageToClients(message);
   }
 }
 
 
 void UdpAudioStreamSink::handleMetadata(const std::string &metadata) {
   if (!metadata.empty()) {
-    std::string messageToSend = radioClientCommunicationParser->getMessageWithMetadata(
-      metadata);
+    std::string messageToSend = radioClientCommunicationParser->getMessageWithMetadata(metadata);
 
     sendMessageToClients(messageToSend);
   }
@@ -35,6 +34,6 @@ void UdpAudioStreamSink::sendMessageToClients(const std::string &message) {
 }
 
 
-void UdpAudioStreamSink::sendMessageToClient(const std::string &message,const std::pair<uint16_t, uint32_t> &client) {
+void UdpAudioStreamSink::sendMessageToClient(const std::string &message, const std::pair<uint16_t, uint32_t> &client) {
   udpClient->sendMessage(message, client.first, client.second);
 }

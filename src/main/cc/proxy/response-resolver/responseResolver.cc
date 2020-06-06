@@ -1,8 +1,8 @@
-#include "responseResolver.h"
-#include "../../utils/programUsagePrinter.h"
-
 #include <memory>
 #include <regex>
+
+#include "responseResolver.h"
+#include "../../utils/programUsagePrinter.h"
 
 ResponseResolver::ResponseResolver(bool metadataRequired, char *programName) :
   programUsagePrinter(std::make_unique<ProgramUsagePrinter>(programName)),

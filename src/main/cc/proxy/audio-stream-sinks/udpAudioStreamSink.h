@@ -2,6 +2,7 @@
 #define MIMUW_S4_SIK_RADIO_UDPAUDIOSTREAMSINK_H
 
 #include <memory>
+
 #include "audioStreamSink.h"
 #include "../udp-client/udpClient.h"
 #include "../udp-client/udpClientsStorage.h"

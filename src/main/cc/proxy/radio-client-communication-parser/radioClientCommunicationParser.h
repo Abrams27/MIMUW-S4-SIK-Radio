@@ -18,13 +18,14 @@ class RadioClientCommunicationParser {
 public:
   RadioClientCommunicationParser() = default;
 
-  CommunicationType parseHeader(std::string header);
+  CommunicationType parseHeader(const std::string &header);
   std::vector<std::string> getMessageWithAudio(const std::string &audioData);
   std::string getMessageWithMetadata(const std::string &metadata);
   std::string getMessageWithIam(const std::string &host, const std::string &port, const std::string &resource);
 
 private:
   const size_t maxMessageDataSize = 8192;
+  const std::string iamMessage = " | HEY ; ) pozdro chillerka d-_-b |";
 
   uint16_t stringToInt16(std::string string);
   CommunicationType getCommunicationTypeForNumber(uint16_t numberAfterConversion);
