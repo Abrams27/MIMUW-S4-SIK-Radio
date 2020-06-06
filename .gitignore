@@ -47,3 +47,7 @@ radio-proxy
 *.mp3
 meta.txt
 responseResolverTest
+/udpClientsStorageTest
+/udpProxyArgumentsResolverTest
+/radioClientCommunicationParserTest
+/radio-test-client

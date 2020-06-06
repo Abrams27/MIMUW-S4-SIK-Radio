@@ -1,7 +1,6 @@
 #include <memory>
 #include <thread>
 #include <csignal>
-#include <iostream>
 
 #include "audio-stream-sinks/audioStreamSinkFactory.h"
 #include "response-resolver/responseResolver.h"

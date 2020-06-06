@@ -34,6 +34,7 @@ private:
   bool hasPreviousOperationTimeoutedFlag = false;
 
   void initSocket();
+  void setTimeout(int timeout);
   void addMulticastIfRequired(const std::string& multicastAddress);
   void addMulticast(const std::string &multicastAddress);
 

@@ -18,6 +18,7 @@ UdpClient::UdpClient(int port, std::string multicastAddress, bool multicastRequi
   serverAddress.sin_addr.s_addr = htonl(INADDR_ANY);
   serverAddress.sin_port = htons(port);
 
+  setTimeout(1);
   addMulticastIfRequired(multicastAddress);
 
   if (bind(socketId, (struct sockaddr *) &serverAddress, (socklen_t) sizeof(serverAddress)) < 0) {
@@ -28,6 +29,20 @@ UdpClient::UdpClient(int port, std::string multicastAddress, bool multicastRequi
 void UdpClient::initSocket() {
   socketId = socket(AF_INET, SOCK_DGRAM, 0);
   if (socketId < 0) {
+    exit(1);
+  }
+}
+
+void UdpClient::setTimeout(int timeout) {
+  struct timeval tv;
+  tv.tv_sec = timeout;
+  tv.tv_usec = 0;
+
+  if (setsockopt(socketId, SOL_SOCKET, SO_RCVTIMEO, (char *)&tv, sizeof(tv)) < 0) {
+    exit(1);
+  }
+
+  if (setsockopt(socketId, SOL_SOCKET, SO_SNDTIMEO, (char *)&tv, sizeof(tv)) < 0) {
     exit(1);
   }
 }

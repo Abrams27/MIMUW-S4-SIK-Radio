@@ -51,6 +51,10 @@ void TcpClient::setTimeout() {
   if (setsockopt (socketId, SOL_SOCKET, SO_RCVTIMEO, (char *)&timeval, sizeof(timeval)) < 0) {
     exit(1);
   }
+
+  if (setsockopt (socketId, SOL_SOCKET, SO_SNDTIMEO, (char *)&timeval, sizeof(timeval)) < 0) {
+    exit(1);
+  }
 }
 
 void TcpClient::startConnection(struct addrinfo *addrResult) {
