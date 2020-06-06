@@ -34,7 +34,6 @@ int main(int argc, char *argv[]) {
     workB(defaultRadioProxyArgumentsResolver, udpProxyArgumentsResolver, argv[0]);
   }
 
-  std::cout << "GRACEFUL";
   return 0;
 }
 
