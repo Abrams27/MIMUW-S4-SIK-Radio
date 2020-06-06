@@ -2,6 +2,8 @@
 #define MIMUW_S4_SIK_RADIO_RADIOPROXYWORKER_H
 
 #include <memory>
+#include <atomic>
+
 #include "../tcp-client/tcpClient.h"
 
 class RadioProxyWorker {
@@ -15,6 +17,9 @@ private:
   std::shared_ptr<TcpClient> tcpClient;
   std::shared_ptr<ResponseResolver> responseResolver;
   std::shared_ptr<AudioStreamSink> audioStreamSink;
+
+  std::atomic_bool interrupted;
+
 
   void readAndParseHeaders() const;
   void readAndParseData(size_t metadataInterval) const;

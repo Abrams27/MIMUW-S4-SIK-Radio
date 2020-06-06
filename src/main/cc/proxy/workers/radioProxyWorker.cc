@@ -10,24 +10,28 @@ void RadioProxyWorker::work(bool metadataRead) {
   responseResolver->parseStatusLine(tcpClient->getResponseLine());
 
   readAndParseHeaders();
+
   const size_t metadataInterval = responseResolver->getAudioBlockSize();
 
-  //TODO
-  while(tcpClient->hasPreviousReadSucceed()) {
+  while(!tcpClient->hasPreviousReadBeenInterrupted() && interrupted == false) {
     readAndParseData(metadataInterval);
   }
 }
 
 void RadioProxyWorker::readAndParseHeaders() const {
-  while(responseResolver->hasHeadersEnded() == 0) {
-    responseResolver->parseHeader(tcpClient->getResponseLine());
+  while(responseResolver->hasHeadersEnded() == 0 && interrupted == false) {
+    std::string header = tcpClient->getResponseLine();
+
+    if(!tcpClient->hasPreviousReadBeenInterrupted()) {
+      responseResolver->parseHeader(header);
+    }
   }
 }
 
 void RadioProxyWorker::readAndParseData(const size_t metadataInterval) const {
   std::string dataChunk = tcpClient->getResponseChunk(metadataInterval);
 
-  if (tcpClient->hasPreviousReadSucceed()) {
+  if (!tcpClient->hasPreviousReadBeenInterrupted()) {
     handleDataAndReadMetadataIfRequired(dataChunk);
   }
 }
@@ -43,7 +47,7 @@ void RadioProxyWorker::handleDataAndReadMetadataIfRequired(const std::string &da
 void RadioProxyWorker::readAndParseMetadata() const {
   std::string metadataSizeChunk = tcpClient->getResponseChunk(1);
 
-  if (tcpClient->hasPreviousReadSucceed()) {
+  if (!tcpClient->hasPreviousReadBeenInterrupted()) {
     handleMetadataSizeAndReadMetadata(metadataSizeChunk);
   }
 }
@@ -52,11 +56,11 @@ void RadioProxyWorker::handleMetadataSizeAndReadMetadata(std::string &metadataSi
   size_t metadataSize = responseResolver->parseMetadataBlockSize(metadataSizeChunk);
   std::string metadataChunk = tcpClient->getResponseChunk(metadataSize);
 
-  if (tcpClient->hasPreviousReadSucceed()) {
+  if (!tcpClient->hasPreviousReadBeenInterrupted()) {
     audioStreamSink->handleMetadata(metadataSizeChunk);
   }
 }
 
 void RadioProxyWorker::interrupt() {
-
+  interrupted = true;
 }

@@ -1,7 +1,7 @@
 #include <memory>
-#include <csignal>
 #include <thread>
-#include <signal.h>
+#include <csignal>
+#include <iostream>
 
 #include "audio-stream-sinks/audioStreamSinkFactory.h"
 #include "response-resolver/responseResolver.h"
@@ -18,6 +18,7 @@ void workB(DefaultRadioProxyArgumentsResolver &defaultRadioProxyArgumentsResolve
 
 std::unique_ptr<RadioProxyWorker> radioProxyWorker;
 std::shared_ptr<RadioClientsConnectionWorker> radioClientsConnectionWorker;
+bool isWokB;
 
 int main(int argc, char *argv[]) {
   handleSigint();
@@ -25,18 +26,24 @@ int main(int argc, char *argv[]) {
   DefaultRadioProxyArgumentsResolver defaultRadioProxyArgumentsResolver(argc, argv);
   UdpProxyArgumentsResolver udpProxyArgumentsResolver(argc, argv);
 
-  if (udpProxyArgumentsResolver.isMulticastAddressDefined()) {
+  isWokB = udpProxyArgumentsResolver.isPortDefined();
+
+  if (!isWokB) {
     workA(defaultRadioProxyArgumentsResolver, argv[0]);
   } else {
     workB(defaultRadioProxyArgumentsResolver, udpProxyArgumentsResolver, argv[0]);
   }
 
+  std::cout << "GRACEFUL";
   return 0;
 }
 
 void catchSiging(int signal) {
   radioProxyWorker->interrupt();
 
+  if (isWokB) {
+    radioClientsConnectionWorker->interrupt();
+  }
 }
 
 void handleSigint() {
@@ -55,20 +62,29 @@ void workB(DefaultRadioProxyArgumentsResolver &defaultRadioProxyArgumentsResolve
   std::string port = std::to_string(defaultRadioProxyArgumentsResolver.getPort());
   std::string resource = defaultRadioProxyArgumentsResolver.getResource();
 
+  const int timeout = defaultRadioProxyArgumentsResolver.getTimeoutOrDefault();
+  const bool metadata = defaultRadioProxyArgumentsResolver.getMetadataOrDefault();
+
   std::shared_ptr<UdpClientsStorage> udpClientsStorage = std::make_shared<UdpClientsStorage>(udpProxyArgumentsResolver.getTimeoutOrDefault());
   std::shared_ptr<UdpClient> udpClient = std::make_shared<UdpClient>(udpProxyArgumentsResolver.getPort());
+
+  std::shared_ptr<ResponseResolver> responseResolver = std::make_shared<ResponseResolver>(metadata, programName);
+  std::shared_ptr<TcpClient> tcpClient = std::make_shared<TcpClient>(host, port, resource, timeout);
+  std::shared_ptr<AudioStreamSink> audioStreamSink = AudioStreamSinkFactory::udpAudioStreamSink(udpClient, udpClientsStorage);
 
   radioClientsConnectionWorker = std::make_shared<RadioClientsConnectionWorker>(udpClient, udpClientsStorage);
 
   std::thread radioClientsConnectionWorkerThread([host, port, resource]{radioClientsConnectionWorker->work(host, port, resource);});
 
-  workA(defaultRadioProxyArgumentsResolver, programName);
+  radioProxyWorker = std::make_unique<RadioProxyWorker>(tcpClient, responseResolver, audioStreamSink);
+  radioProxyWorker->work(metadata);
 
   radioClientsConnectionWorkerThread.join();
 }
 
 
 void workA(DefaultRadioProxyArgumentsResolver &defaultRadioProxyArgumentsResolver, char* programName) {
+  std::cout << "WORK A";
   std::string host = defaultRadioProxyArgumentsResolver.getHost();
   std::string port = std::to_string(defaultRadioProxyArgumentsResolver.getPort());
   std::string resource = defaultRadioProxyArgumentsResolver.getResource();
@@ -83,3 +99,4 @@ void workA(DefaultRadioProxyArgumentsResolver &defaultRadioProxyArgumentsResolve
   radioProxyWorker = std::make_unique<RadioProxyWorker>(tcpClient, responseResolver, audioStreamSink);
   radioProxyWorker->work(metadata);
 }
+//./radio-proxy -h 178.32.107.151  -p 3639 -r /stream

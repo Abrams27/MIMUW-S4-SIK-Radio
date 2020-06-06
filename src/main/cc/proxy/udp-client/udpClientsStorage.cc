@@ -30,7 +30,10 @@ bool UdpClientsStorage::updateClientTimeoutAndRemoveIfExpired(std::pair<uint16_t
 
   time_t newTimestamp = getTimestamp();
   bool isTimeouted = removeClientIfTimeouted(newTimestamp, clientInfo);
-  clientsMap[clientInfo] = newTimestamp;
+
+  if (!isTimeouted) {
+    clientsMap[clientInfo] = newTimestamp;
+  }
 
   mutex.unlock();
 

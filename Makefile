@@ -1,5 +1,5 @@
 CC = g++
-CFLAGS = -Wall -Wextra -O2 -std=c++14
+CFLAGS = -Wall -Wextra -O2 -lpthread -std=c++14
 LDFLAGS =
 
 .PHONY: all tests clean

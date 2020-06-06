@@ -36,7 +36,7 @@ void UdpProxyArgumentsResolver::parseRequiredArgumentsOrExit() {
 void UdpProxyArgumentsResolver::parsePortOrExit() {
   if (programArgumentsParser->isIntArgumentDefined(portFlag)) {
     port = programArgumentsParser->getIntArgument(portFlag);
-    isPortDefined = true;
+    isPortDefinedFlag = true;
   } else if (programArgumentsParser->isArgumentDefined(portFlag)) {
     programUsagePrinter->printUsageAndExitWith1();
   }
@@ -49,7 +49,7 @@ void UdpProxyArgumentsResolver::parseOptionalArguments() {
 }
 
 void UdpProxyArgumentsResolver::parseTimeout() {
-  if (isPortDefined && programArgumentsParser->isIntArgumentDefined(timeoutFlag)) {
+  if (isPortDefinedFlag && programArgumentsParser->isIntArgumentDefined(timeoutFlag)) {
     parseTimeoutIfDefinedOrExit();
   } else if (programArgumentsParser->isArgumentDefined(timeoutFlag)) {
     programUsagePrinter->printUsageAndExitWith1();
@@ -75,9 +75,13 @@ void UdpProxyArgumentsResolver::parseMulticastIfDefined() {
     multicast = programArgumentsParser->getArgument(multicastFlag);
   }
 
-  if (!isPortDefined && isMulticastDefined) {
+  if (!isPortDefinedFlag && isMulticastDefined) {
     programUsagePrinter->printUsageAndExitWith1();
   }
+}
+
+bool UdpProxyArgumentsResolver::isPortDefined() {
+  return isPortDefinedFlag;
 }
 
 

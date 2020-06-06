@@ -12,7 +12,8 @@ const static std::pair<uint16_t, uint32_t> CLIENT_2(21, 37);
 
 void shouldAddToStorageAndGetList();
 void shouldAddToStorageAndGetListAfterTimeout();
-void   shouldAddToStorageAndGetListAfterUpdate();
+void shouldAddToStorageAndGetListAfterUpdate();
+void shouldRemoveIfTimeoutedAndNotUpdate();
 
 int main() {
 
@@ -21,6 +22,7 @@ int main() {
   shouldAddToStorageAndGetList();
   shouldAddToStorageAndGetListAfterTimeout();
   shouldAddToStorageAndGetListAfterUpdate();
+  shouldRemoveIfTimeoutedAndNotUpdate();
 
   logAllTestsPassed();
 
@@ -69,6 +71,22 @@ void shouldAddToStorageAndGetListAfterUpdate() {
   sleep(2);
   udpClientsStorage.updateClientTimeoutAndRemoveIfExpired(CLIENT_1);
   sleep(2);
+
+  assert(udpClientsStorage.getActiveClients() == required);
+
+  logPassedTest();
+}
+
+void shouldRemoveIfTimeoutedAndNotUpdate() {
+  logTest("should remove if timeouted and not update");
+
+  UdpClientsStorage udpClientsStorage(2);
+  udpClientsStorage.addNewClient(CLIENT_1);
+
+  sleep(4);
+  udpClientsStorage.updateClientTimeoutAndRemoveIfExpired(CLIENT_1);
+
+  std::vector<std::pair<uint16_t, uint32_t> > required;
 
   assert(udpClientsStorage.getActiveClients() == required);
 

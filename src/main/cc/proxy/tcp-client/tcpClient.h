@@ -14,7 +14,7 @@ public:
   void sentRequest(bool metadataRequired);
   std::string getResponseLine();
   std::string getResponseChunk(size_t chunkSize);
-  bool hasPreviousReadSucceed();
+  bool hasPreviousReadBeenInterrupted();
 
 private:
   std::string host;
@@ -24,7 +24,7 @@ private:
 
   int socketId;
   FILE *connectionFile;
-  bool hasPreviousReadSucceedFlag = false;
+  bool hasPreviousReadBeenInterruptedFlag = false;
 
   void initSocket(struct addrinfo *addrResult);
   void startConnection(struct addrinfo *addrResult);
@@ -32,6 +32,8 @@ private:
 
   int sendRequestNoMetadata();
   int sentRequestMetadata();
+
+  void checkErrnoAndUpdateFlagOrExit();
 };
 
 

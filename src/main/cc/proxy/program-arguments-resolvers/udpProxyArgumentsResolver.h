@@ -10,6 +10,7 @@ public:
   UdpProxyArgumentsResolver(int argc, char *argv[]);
 
   int getPort();
+  bool isPortDefined();
 
   bool isMulticastAddressDefined();
   std::string getMulticastAddress();
@@ -25,7 +26,7 @@ private:
   const std::string multicastFlag = "-B";
   const std::string timeoutFlag = "-T";
 
-  bool isPortDefined = false;
+  bool isPortDefinedFlag = false;
   int port;
 
   bool isMulticastDefined;

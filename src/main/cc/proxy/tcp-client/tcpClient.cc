@@ -1,15 +1,11 @@
 #include "tcpClient.h"
 
-#include <memory>
-
-#include <sys/types.h>
 #include <sys/socket.h>
 #include <netdb.h>
-#include <stdio.h>
-#include <string.h>
+#include <cstdio>
+#include <cstring>
 #include <unistd.h>
-#include <stdlib.h>
-#include <string>
+#include <cstdlib>
 #include <iostream>
 #include <utility>
 
@@ -101,10 +97,10 @@ int TcpClient::sentRequestMetadata() {
 std::string TcpClient::getResponseLine() {
   char *line = NULL;
   size_t len = 0;
-  hasPreviousReadSucceedFlag = true;
+  hasPreviousReadBeenInterruptedFlag = false;
 
   if (getline(&line, &len, connectionFile) < 0) {
-    hasPreviousReadSucceedFlag = false;
+    checkErrnoAndUpdateFlagOrExit();
   }
 
   return std::string(line);
@@ -113,22 +109,30 @@ std::string TcpClient::getResponseLine() {
 
 std::string TcpClient::getResponseChunk(size_t chunkSize) {
   std::string result(chunkSize, '\0');
-  hasPreviousReadSucceedFlag = true;
+  hasPreviousReadBeenInterruptedFlag = false;
 
   if (fread(&result[0], 1, chunkSize, connectionFile) < chunkSize) {
-    hasPreviousReadSucceedFlag = false;
+    checkErrnoAndUpdateFlagOrExit();
   }
 
   return result;
 }
 
-bool TcpClient::hasPreviousReadSucceed() {
-  return hasPreviousReadSucceedFlag;
+bool TcpClient::hasPreviousReadBeenInterrupted() {
+  return hasPreviousReadBeenInterruptedFlag;
 }
 
 TcpClient::~TcpClient() {
   fclose(connectionFile);
   close(socketId);
+}
+
+void TcpClient::checkErrnoAndUpdateFlagOrExit() {
+  if (errno == EINTR) {
+    hasPreviousReadBeenInterruptedFlag = true;
+  } else {
+    exit(1);
+  }
 }
 
 
