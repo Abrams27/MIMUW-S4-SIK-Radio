@@ -66,7 +66,8 @@ void workB(DefaultRadioProxyArgumentsResolver &defaultRadioProxyArgumentsResolve
   const bool metadata = defaultRadioProxyArgumentsResolver.getMetadataOrDefault();
 
   std::shared_ptr<UdpClientsStorage> udpClientsStorage = std::make_shared<UdpClientsStorage>(udpProxyArgumentsResolver.getTimeoutOrDefault());
-  std::shared_ptr<UdpClient> udpClient = std::make_shared<UdpClient>(udpProxyArgumentsResolver.getPort());
+  std::shared_ptr<UdpClient> udpClient
+    = std::make_shared<UdpClient>(udpProxyArgumentsResolver.getPort(), udpProxyArgumentsResolver.getMulticastAddress(), udpProxyArgumentsResolver.isMulticastAddressDefined());
 
   std::shared_ptr<ResponseResolver> responseResolver = std::make_shared<ResponseResolver>(metadata, programName);
   std::shared_ptr<TcpClient> tcpClient = std::make_shared<TcpClient>(host, port, resource, timeout);

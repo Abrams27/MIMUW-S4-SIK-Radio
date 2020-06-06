@@ -13,7 +13,7 @@
 
 class UdpClient {
 public:
-  UdpClient(int port);
+  UdpClient(int port, std::string multicastAddress, bool multicastRequired);
   ~UdpClient();
 
   void sendMessage(const std::string &message, uint16_t port, uint32_t address);
@@ -24,16 +24,25 @@ public:
   bool hasPreviousOperationTimeouted();
 
 private:
+  bool multicastRequired = false;
+
   int socketId;
+  struct ip_mreq ipMreq;
   struct sockaddr_in latestClientAddress;
 
   bool hasPreviousOperationBeenInterruptedFlag = false;
   bool hasPreviousOperationTimeoutedFlag = false;
 
   void initSocket();
+  void addMulticastIfRequired(const std::string& multicastAddress);
+  void addMulticast(const std::string &multicastAddress);
+
+  void closeMulticastIfRequired();
+  void closeMulticast();
 
   void checkErrnoAndUpdateInterruptFlagOrExit();
   void checkErrnoAndUpdateInterruptFlagAndTimeoutFlagOrExit();
+
 };
 
 

@@ -5,14 +5,20 @@
 #include <unistd.h>
 #include <cstdlib>
 #include <errno.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
 
-UdpClient::UdpClient(int port) {
+UdpClient::UdpClient(int port, std::string multicastAddress, bool multicastRequired) :
+  multicastRequired(multicastRequired) {
   struct sockaddr_in serverAddress;
 
   initSocket();
   serverAddress.sin_family = AF_INET;
   serverAddress.sin_addr.s_addr = htonl(INADDR_ANY);
   serverAddress.sin_port = htons(port);
+
+  addMulticastIfRequired(multicastAddress);
 
   if (bind(socketId, (struct sockaddr *) &serverAddress, (socklen_t) sizeof(serverAddress)) < 0) {
     exit(1);
@@ -22,6 +28,24 @@ UdpClient::UdpClient(int port) {
 void UdpClient::initSocket() {
   socketId = socket(AF_INET, SOCK_DGRAM, 0);
   if (socketId < 0) {
+    exit(1);
+  }
+}
+
+void UdpClient::addMulticastIfRequired(const std::string& multicastAddress) {
+  if (multicastRequired) {
+    addMulticast(multicastAddress);
+  }
+}
+
+void UdpClient::addMulticast(const std::string &multicastAddress) {
+  ipMreq.imr_interface.s_addr = htonl(INADDR_ANY);
+
+  if (inet_aton(multicastAddress.c_str(), &ipMreq.imr_multiaddr) == 0) {
+    exit(1);
+  }
+
+  if (setsockopt(socketId, IPPROTO_IP, IP_ADD_MEMBERSHIP, &ipMreq, sizeof(ipMreq)) < 0) {
     exit(1);
   }
 }
@@ -90,15 +114,29 @@ sockaddr_in UdpClient::getLatestClientAddress() {
 }
 
 
-UdpClient::~UdpClient() {
-  close(socketId);
-}
-
 bool UdpClient::hasPreviousOperationBeenInterrupted() {
   return hasPreviousOperationBeenInterruptedFlag;
 }
+
 
 bool UdpClient::hasPreviousOperationTimeouted() {
   return hasPreviousOperationTimeoutedFlag;
 }
 
+
+UdpClient::~UdpClient() {
+  closeMulticastIfRequired();
+  close(socketId);
+}
+
+void UdpClient::closeMulticastIfRequired() {
+  if (multicastRequired) {
+    closeMulticast();
+  }
+}
+
+void UdpClient::closeMulticast() {
+  if (setsockopt(socketId, IPPROTO_IP, IP_DROP_MEMBERSHIP, &ipMreq, sizeof(ipMreq)) < 0) {
+    exit(1);
+  }
+}
