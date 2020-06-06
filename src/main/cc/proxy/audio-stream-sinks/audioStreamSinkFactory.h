@@ -10,8 +10,8 @@
 class AudioStreamSinkFactory {
 
 public:
-  static std::unique_ptr<AudioStreamSink> outputAudioStreamSink();
-  static std::unique_ptr<AudioStreamSink> udpAudioStreamSink(std::shared_ptr<UdpClient> udpClient, std::shared_ptr<UdpClientsStorage> udpClientsStorage);
+  static std::shared_ptr<AudioStreamSink> outputAudioStreamSink();
+  static std::shared_ptr<AudioStreamSink> udpAudioStreamSink(std::shared_ptr<UdpClient> udpClient, std::shared_ptr<UdpClientsStorage> udpClientsStorage);
 };
 
 #endif //MIMUW_S4_SIK_RADIO_AUDIOSTREAMSINKFACTORY_H

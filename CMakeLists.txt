@@ -6,7 +6,8 @@ set (CMAKE_CXX_STANDARD 14)
 # main
 # proxy
 add_executable(radio-proxy                                              src/main/cc/proxy/radioProxy.cc)
-add_executable(radioClientsConnectionResolver src/main/cc/proxy/radioClientsConnectionWorker.cc)
+add_executable(radioClientsConnectionResolver                           src/main/cc/proxy/workers/radioClientsConnectionWorker.cc)
+add_executable(radioProxyWorker                                         src/main/cc/proxy/workers/radioProxyWorker.cc)
 
 add_executable(audioStreamSinkFactory                                   src/main/cc/proxy/audio-stream-sinks/audioStreamSinkFactory.cc)
 add_executable(outputAudioStreamSink                                    src/main/cc/proxy/audio-stream-sinks/outputAudioStreamSink.cc)

@@ -7,17 +7,19 @@ LDFLAGS =
 
 all: radio-proxy tests
 
-radio-proxy: radioProxy.o audioStreamSinkFactory.o outputAudioStreamSink.o programUsagePrinter.o responseResolver.o tcpClient.o udpClientsStorage.o radioClientCommunicationParser.o udpProxyArgumentsResolver.o defaultRadioProxyArgumentsResolver.o programArgumentsParser.o udpClient.o radioClientCommunicationParser.o radioClientsConnectionWorker.o udpAudioStreamSink.o
+radio-proxy: radioProxy.o audioStreamSinkFactory.o outputAudioStreamSink.o programUsagePrinter.o responseResolver.o tcpClient.o udpClientsStorage.o radioClientCommunicationParser.o udpProxyArgumentsResolver.o defaultRadioProxyArgumentsResolver.o programArgumentsParser.o udpClient.o radioClientCommunicationParser.o radioClientsConnectionWorker.o udpAudioStreamSink.o radioProxyWorker.o
 	$(CC) $(LDFLAGS) -o $@ $^
 
 
-radioProxy.o: src/main/cc/proxy/radioProxy.cc src/main/cc/proxy/audio-stream-sinks/audioStreamSinkFactory.h src/main/cc/proxy/audio-stream-sinks/audioStreamSink.h src/main/cc/proxy/audio-stream-sinks/outputAudioStreamSink.h src/main/cc/proxy/audio-stream-sinks/udpAudioStreamSink.h src/main/cc/utils/programUsagePrinter.h src/main/cc/proxy/response-resolver/responseResolver.h src/main/cc/proxy/tcp-client/tcpClient.h src/main/cc/utils/programUsagePrinter.h src/main/cc/proxy/program-arguments-resolvers/udpProxyArgumentsResolver.h src/main/cc/proxy/program-arguments-resolvers/defaultRadioProxyArgumentsResolver.h src/main/cc/proxy/radioClientsConnectionWorker.h src/main/cc/proxy/udp-client/udpClient.h
+radioProxy.o: src/main/cc/proxy/radioProxy.cc src/main/cc/proxy/audio-stream-sinks/audioStreamSinkFactory.h src/main/cc/proxy/audio-stream-sinks/audioStreamSink.h src/main/cc/proxy/audio-stream-sinks/outputAudioStreamSink.h src/main/cc/proxy/audio-stream-sinks/udpAudioStreamSink.h src/main/cc/utils/programUsagePrinter.h src/main/cc/proxy/response-resolver/responseResolver.h src/main/cc/proxy/tcp-client/tcpClient.h src/main/cc/utils/programUsagePrinter.h src/main/cc/proxy/program-arguments-resolvers/udpProxyArgumentsResolver.h src/main/cc/proxy/program-arguments-resolvers/defaultRadioProxyArgumentsResolver.h src/main/cc/proxy/workers/radioClientsConnectionWorker.h src/main/cc/proxy/udp-client/udpClient.h src/main/cc/proxy/workers/radioProxyWorker.h
 	$(CC) $(CFLAGS) -c $<
 
 
-radioClientsConnectionWorker.o: src/main/cc/proxy/radioClientsConnectionWorker.cc src/main/cc/proxy/radioClientsConnectionWorker.h src/main/cc/proxy/udp-client/udpClientsStorage.h src/main/cc/proxy/udp-client/udpClient.h src/main/cc/proxy/radio-client-communication-parser/radioClientCommunicationParser.h
+radioClientsConnectionWorker.o: src/main/cc/proxy/workers/radioClientsConnectionWorker.cc src/main/cc/proxy/workers/radioClientsConnectionWorker.h src/main/cc/proxy/udp-client/udpClientsStorage.h src/main/cc/proxy/udp-client/udpClient.h src/main/cc/proxy/radio-client-communication-parser/radioClientCommunicationParser.h
 	$(CC) $(CFLAGS) -c $<
 
+radioProxyWorker.o: src/main/cc/proxy/workers/radioProxyWorker.cc src/main/cc/proxy/audio-stream-sinks/audioStreamSinkFactory.h src/main/cc/proxy/audio-stream-sinks/audioStreamSink.h src/main/cc/proxy/audio-stream-sinks/outputAudioStreamSink.h src/main/cc/proxy/audio-stream-sinks/udpAudioStreamSink.h src/main/cc/utils/programUsagePrinter.h src/main/cc/proxy/response-resolver/responseResolver.h src/main/cc/proxy/tcp-client/tcpClient.h src/main/cc/utils/programUsagePrinter.h src/main/cc/proxy/program-arguments-resolvers/udpProxyArgumentsResolver.h src/main/cc/proxy/program-arguments-resolvers/defaultRadioProxyArgumentsResolver.h src/main/cc/proxy/workers/radioClientsConnectionWorker.h src/main/cc/proxy/udp-client/udpClient.h
+	$(CC) $(CFLAGS) -c $<
 
 audioStreamSinkFactory.o: src/main/cc/proxy/audio-stream-sinks/audioStreamSinkFactory.cc src/main/cc/proxy/audio-stream-sinks/audioStreamSinkFactory.h src/main/cc/proxy/audio-stream-sinks/audioStreamSink.h src/main/cc/proxy/audio-stream-sinks/outputAudioStreamSink.h src/main/cc/proxy/audio-stream-sinks/udpAudioStreamSink.h
 	$(CC) $(CFLAGS) -c $<

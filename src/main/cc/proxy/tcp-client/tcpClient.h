@@ -8,7 +8,7 @@
 
 class TcpClient {
 public:
-  TcpClient(std::string host, std::string port, std::string resource, int timeout = 5);
+  TcpClient(std::string host, std::string port, std::string resource, int timeout);
   ~TcpClient();
 
   void sentRequest(bool metadataRequired);

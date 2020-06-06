@@ -3,9 +3,9 @@
 
 
 #include <memory>
-#include "udp-client/udpClient.h"
-#include "udp-client/udpClientsStorage.h"
-#include "radio-client-communication-parser/radioClientCommunicationParser.h"
+#include "../udp-client/udpClient.h"
+#include "../udp-client/udpClientsStorage.h"
+#include "../radio-client-communication-parser/radioClientCommunicationParser.h"
 
 class RadioClientsConnectionWorker {
 public:
